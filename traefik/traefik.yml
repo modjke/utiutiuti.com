@@ -1,0 +1,57 @@
+log:
+  level: ERROR
+
+serversTransport:
+    # 
+    # If non-zero, maxIdleConnsPerHost controls the maximum idle (keep-alive) connections to keep per-host.
+    #  
+    # https://doc.traefik.io/traefik/routing/overview/#maxidleconnsperhost
+    #
+    # optional, default = 2
+    # MaxIdleConnsPerHost = -1 mean to disable persistence conneciton
+    # 
+    # IMPORTANT: set MaxIdleConnsPerHost = -1 solve randomly 502 Bad Response
+    #            must tunning on Production
+    #
+    maxIdleConnsPerHost: -1
+
+accessLog:
+  bufferingSize: 100
+  filters:
+    statusCodes:
+      - "301"
+      - "500-599"
+    retryAttempts: true
+    
+
+providers:
+  file:
+    filename: /etc/traefik/file-provider.yml
+
+entryPoints:
+  http:
+    address: ":80"   
+    http: 
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+          permanent: true
+
+  https:
+    address: ":443"
+    http:
+      tls:
+        certResolver: LE
+      middlewares:
+        - www-redirect@file    
+
+certificatesResolvers:  
+  LE:
+    acme:      
+      # email: ${TRAEFIK_CERTIFICATESRESOLVERS_LE_ACME_EMAIL_FILE}
+      caServer: https://acme-v02.api.letsencrypt.org/directory
+      storage: /certificates/acme.json
+      tlsChallenge: {}
+
+
