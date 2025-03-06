@@ -30,6 +30,8 @@ services:
       dockerfile: Dockerfile
     hostname: utiutiuti
     restart: always
+    networks:
+      - traefik-public
     
 volumes:
   traefik-certificates:
