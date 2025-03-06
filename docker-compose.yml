@@ -42,4 +42,4 @@ networks:
 
 secrets:
   letsencrypt-email:
-    external: true
+    file: letsencrypt-email.txt
