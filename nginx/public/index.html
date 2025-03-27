@@ -1,114 +1,499 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Legacy of uti</title>
+    <title>The Extraordinary uti</title>
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="UTI" />
+    <link rel="manifest" href="/site.webmanifest" />
     <style>
-        body {
-            font-family: 'Playfair Display', serif; /* Elegant serif font */
-            background-color: #f8f8f8;
+        /* --- Configuration --- */
+        :root {
+            --primary-color: #ffffff;
+            /* White text */
+            --secondary-color: #b0b0b0;
+            /* Lighter gray for subtitles/details */
+            --accent-color: #007bff;
+            /* A nice blue for emphasis */
+            --quote-bg: rgba(255, 255, 255, 0.05);
+            /* Subtle background for quotes */
+            --font-main: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            --font-quotes: 'Georgia', serif;
+        }
+
+        /* --- Base & Reset --- */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            -webkit-touch-callout: none;
+            /* iOS Safari */
+            -webkit-user-select: none;
+            /* Safari */
+            -khtml-user-select: none;
+            /* Konqueror HTML */
+            -moz-user-select: none;
+            /* Old versions of Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+            user-select: none;
+            /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+            /* Needed for body min-height 100vh */
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--primary-color);
+            background: #0f0f10;
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* Prevent horizontal scrollbars */
+
+            /* --- Sticky Footer Setup (Flexbox) --- */
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
             min-height: 100vh;
-            color: #333;
+            /* Ensure body takes at least full viewport height */
         }
 
-        header {
+        /* --- Main Content Wrapper (for Sticky Footer) --- */
+        .main-content {
+            flex-grow: 1;
+            /* Allows this element to grow and push the footer down */
+        }
+
+        /* --- Container --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Sections --- */
+        section {
+            padding: 60px 0;
+            opacity: 0;
+            /* Start hidden for animation */
+            transform: translateY(30px);
+            /* Start slightly lower */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        /* Add 'visible' class via JS or manually for testing */
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger animations */
+        .main-content section:nth-of-type(1) {
+            transition-delay: 0s;
+        }
+
+        /* Hero now starts at 0 */
+        .main-content section:nth-of-type(2) {
+            transition-delay: 0.2s;
+        }
+
+        /* About */
+        .main-content section:nth-of-type(3) {
+            transition-delay: 0.4s;
+        }
+
+        /* Quotes */
+
+
+        /* --- Hero Section --- */
+        .hero {
+            /* min-height: 70vh; */
+            /* REMOVED: Height now wraps content */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            padding: 40px 20px;
+            padding: 60px 20px;
+            /* Increased padding slightly for visual spacing */
+            /* Optional: replace with a specific background image */
+            border-bottom: 3px solid var(--accent-color);
         }
 
-        header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            color: #4a6572; /* A nice blue-grey */
-            font-family: 'Montserrat', sans-serif; /* A modern sans-serif for the title */
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            animation: fadeInDown 1s ease-out forwards;
         }
 
-        .header p {
-            font-size: 1.1em;
-            color: #666;
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--secondary-color);
             max-width: 600px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+            animation-fill-mode: backwards;
+        }
+
+        /* --- About Section --- */
+        .about h2,
+        .quotes h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            margin-top: 40px;
+
+            color: var(--primary-color);
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .about h2::after,
+        .quotes h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .about p {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            text-align: justify;
+            max-width: 700px;
             margin: 0 auto;
         }
 
-        .main-content {
-            max-width: 800px;
-            padding: 20px;
-            text-align: center;
+        /* --- Quotes Section --- */
+        .quotes-container {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
         }
 
-        .bio {
-            margin-bottom: 30px;
-            line-height: 1.6;
-            font-size: 1.1em;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .quotes {
-            margin-top: 30px;
+        @media (min-width: 768px) {
+            .quotes-container {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
         }
 
         .quote {
-            font-style: italic;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #e8f5e9; /* Light green for quotes */
+            background: var(--quote-bg);
+            padding: 25px;
             border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            color: #2e7d32;
+            border-left: 5px solid var(--accent-color);
+            font-family: var(--font-quotes);
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--primary-color);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
+        .quote:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote::before {
+            content: '“';
+            font-size: 3rem;
+            color: var(--accent-color);
+            opacity: 0.3;
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            line-height: 1;
+        }
+
+        /* --- Footer --- */
         footer {
-            margin-top: 40px;
             text-align: center;
             padding: 20px;
-            color: #888;
+            margin-top: 40px;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            /* No flex-grow, so it stays at the bottom */
         }
 
-        /* Google Fonts Links */
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+        .bouncing-uti {
+            width: 50px;
+            height: 50px;
+            background-image: url('favicon-96x96.png');
+            position: fixed;
+            /* Position relative to the body */
+            /* Initial position will be set by JavaScript */
+            top: 0;
+            left: 0;
+            will-change: transform;
+            /* Hint for browser optimization */
+            z-index: -999;
+            background-size: contain;
+            overflow: hidden;
+            border-radius: 50%;
 
+        }
+
+        div.uti-pump {
+            font-weight: bold;
+            width: 200px;
+            height: 50px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 auto;
+            margin-top: 40px;
+        }
+
+        /* --- Basic Animations --- */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
+
 <body>
 
-    <header>
-        <h1>The Extraordinary uti</h1>
-        <p>A legend remembered for his unique perspective and unforgettable words.</p>
-    </header>
+    <div class="main-content">
 
-    <main class="main-content">
-        <div class="bio">
-            <p>uti, a figure of enigmatic charm, lived a life marked by unexpected turns and profound insights. While details of his life remain shrouded in mystery, his impact on those who knew him is undeniable. He possessed a rare ability to blend the mundane with the extraordinary, leaving behind a legacy of memorable phrases and a spirit of joyful unpredictability. His observations, though often brief, resonated deeply, reminding us to embrace the unexpected and find humor in the everyday.</p>
-        </div>
+        <section class="hero visible">
+            <h1>The Extraordinary uti</h1>
+            <p>A legend remembered for his unique perspective and unforgettable words.</p>
+        </section>
 
-        <div class="quotes">
-            <div class="quote">"green, are you retarded or what?"</div>
-            <div class="quote">"blue, what the fuck are you doing?"</div>
-            <div class="quote">"rush B! *goes A*"</div>            
-        </div>
-    </main>
 
+
+        <section id="about" class="about container">
+            <h2>About the Legend</h2>
+            <p>
+                uti, a figure of enigmatic charm, lived a life marked by unexpected turns and profound insights. While
+                details of his life remain shrouded in mystery, his impact on those who knew him is undeniable. He
+                possessed a rare ability to blend the mundane with the extraordinary, leaving behind a legacy of
+                memorable phrases and a spirit of joyful unpredictability. His observations, though often brief,
+                resonated deeply, reminding us to embrace the unexpected and find humor in the everyday.
+            </p>
+        </section>
+
+        <section id="quotes" class="quotes container">
+            <h2>Words of Wisdom</h2>
+            <div class="quotes-container">
+                <blockquote class="quote">
+                    "green, are you retarded or what?"
+                </blockquote>
+                <blockquote class="quote">
+                    "blue, what the fuck are you doing?"
+                </blockquote>
+                <blockquote class="quote">
+                    "rush B! *goes A*"
+                </blockquote>
+            </div>
+
+            <div class="uti-pump">MORE UTI</div>
+        </section>
+
+    </div>
     <footer>
-        <p>&copy; 2025 The Legacy of uti</p>
+        <p>&copy; 2025 Remembering uti. All rights reserved (or not, uti wouldn't care).</p>
     </footer>
 
-</body>
-</html>
+    <script>
+        // Select sections within .main-content needing scroll animation
+        const sections = document.querySelectorAll('.main-content section');
 
-<!-- Sources: -->
-<!-- 1. https://stackoverflow.blog/2023/04/26/the-worst-coder-in-the-world-tries-an-ai-sidekick/ -->
-<!-- 2. https://github.com/SagarN21/Coding_Practice_4 -->
-<!-- 3. https://github.com/ChispyDev/jositoslopez.com -->
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                // Check if it's intersecting and doesn't already have the 'visible' class
+                // Prevents re-triggering if element scrolls out and back in quickly
+                if (entry.isIntersecting && !entry.target.classList.contains('visible')) {
+                    // Add 'visible' class only if it's not the hero section OR if hero animation is desired on scroll
+                    // Since hero is set to 'visible' initially, this check might be redundant for it,
+                    // but good practice if hero visibility could change.
+                    if (!entry.target.classList.contains('hero')) {
+                        entry.target.classList.add('visible');
+                    }
+                    // Optional: uncomment below to make animations only trigger once
+                    // observer.unobserve(entry.target);
+                }
+                // Optional: remove 'visible' class if element scrolls out of view
+                // else if (!entry.isIntersecting && entry.target.classList.contains('visible')) {
+                //     // Optionally remove class if you want animation to re-trigger on scroll back in
+                //     if (!entry.target.classList.contains('hero')) { // Don't hide hero on scroll out
+                //         entry.target.classList.remove('visible');
+                //     }
+                // }
+            });
+        };
+
+        const intersectionObserver = new IntersectionObserver(observerCallback, observerOptions);
+
+        sections.forEach(section => {
+            // If the section is not the hero, observe it for scroll animation
+            if (!section.classList.contains('hero')) {
+                intersectionObserver.observe(section);
+            }
+            // If you WANT the hero section to also animate on scroll (instead of load),
+            // remove the 'visible' class from it in HTML and uncomment the next line:
+            // intersectionObserver.observe(section);
+        });
+
+        // Ensure hero section is visible immediately (if not animated by scroll)
+        // This is slightly redundant now as 'visible' is hardcoded in HTML for hero,
+        // but reinforces the intent.
+        const heroSection = document.querySelector('.hero');
+        if (heroSection && !heroSection.classList.contains('visible')) {
+            // If you decided to animate hero on scroll, this ensures it's visible if JS fails or is slow
+            // Or, if you keep initial visibility, this does nothing extra.
+            // heroSection.classList.add('visible'); // Could force visibility if needed
+        }
+
+    </script>
+
+
+
+
+    <script>
+
+        document.querySelector('.uti-pump').addEventListener('click', addUti);
+
+
+        function addUti() {
+            const body = document.body;
+            const square = document.createElement('div');
+            square.classList.add('bouncing-uti');
+            body.appendChild(square);
+
+
+
+            // --- Configuration ---
+            const speed = 1 + Math.random() * 10; // Pixels per frame (adjust for faster/slower)
+            const squareSize = 50; // Must match CSS width/height
+
+
+
+            let windowWidth = window.innerWidth;
+            let windowHeight = window.innerHeight;
+
+            // --- State Variables ---
+            let posX = Math.random() * (windowWidth - squareSize); // Initial X position
+            let posY = Math.random() * (windowHeight - squareSize); // Initial Y position
+            let velocityX = (Math.random() > 0.5 ? -1 : 1) * speed; // Initial X direction/speed
+            let velocityY = (Math.random() > 0.5 ? -1 : 1) * speed; // Initial Y direction/speed
+
+            // --- Update container size on window resize ---
+            window.addEventListener('resize', () => {
+                windowWidth = window.innerWidth;
+                windowHeight = window.innerHeight;
+
+                // Optional: Prevent square from getting stuck if resize makes it go out of bounds
+                if (posX + squareSize > windowWidth) {
+                    posX = windowWidth - squareSize;
+                }
+                if (posY + squareSize > windowHeight) {
+                    posY = windowHeight - squareSize;
+                }
+                if (posX < 0) {
+                    posX = 0;
+                }
+                if (posY < 0) {
+                    posY = 0;
+                }
+            });
+
+            // --- Animation Loop ---
+            function animate() {
+                // 1. Update position
+                posX += velocityX;
+                posY += velocityY;
+
+                // 2. Check for collisions with boundaries
+                // Right edge collision
+                if (posX + squareSize >= windowWidth) {
+                    velocityX = -speed; // Reverse X direction
+                    posX = windowWidth - squareSize; // Clamp position to edge
+                    // Optional: Change color on hit
+                    // square.style.backgroundColor = getRandomColor();
+                }
+                // Left edge collision
+                else if (posX <= 0) {
+                    velocityX = speed; // Reverse X direction
+                    posX = 0; // Clamp position to edge
+                    // square.style.backgroundColor = getRandomColor();
+                }
+
+                // Bottom edge collision
+                if (posY + squareSize >= windowHeight) {
+                    velocityY = -speed; // Reverse Y direction
+                    posY = windowHeight - squareSize; // Clamp position to edge
+                    // square.style.backgroundColor = getRandomColor();
+                }
+                // Top edge collision
+                else if (posY <= 0) {
+                    velocityY = speed; // Reverse Y direction
+                    posY = 0; // Clamp position to edge
+                    // square.style.backgroundColor = getRandomColor();
+                }
+
+                // 3. Apply updated position to the square element
+                // Using transform is generally more performant for movement than top/left
+                square.style.transform = `translate(${posX}px, ${posY}px)`;
+
+                // 4. Request the next frame
+                requestAnimationFrame(animate);
+            }
+
+            square.style.transform = `translate(${posX}px, ${posY}px)`;
+            requestAnimationFrame(animate);
+        }
+    </script>
+
+</body>
+
+</html>
