@@ -235,7 +235,7 @@
             /* No flex-grow, so it stays at the bottom */
         }
 
-        .bouncing-uti {
+        .ball {
             width: 50px;
             height: 50px;
             background-image: url('favicon-96x96.png');
@@ -246,11 +246,10 @@
             left: 0;
             will-change: transform;
             /* Hint for browser optimization */
-            z-index: -999;
+            z-index: 1;
             background-size: contain;
             overflow: hidden;
             border-radius: 50%;
-
         }
 
         div.uti-pump {
@@ -266,6 +265,27 @@
             margin: 0 auto;
             margin-top: 40px;
         }
+
+        p.tap-anywhere {
+            text-align: center;
+            color: white;            
+            margin-top: 50px;
+            animation: flashing-text 1s infinite;
+        }
+
+        @keyframes flashing-text {
+            
+            0% {
+                color: white;
+            }
+            50% {
+                color: #007bff;
+            }
+            100% {
+                color: white;
+            }
+        }
+
 
         /* --- Basic Animations --- */
         @keyframes fadeInDown {
@@ -330,7 +350,8 @@
                 </blockquote>
             </div>
 
-            <div class="uti-pump">MORE UTI</div>
+            <p class="tap-anywhere">Tap anywhere to spawn uti<br>BEWARE: UTI IS UNSTABLE</p>
+            
         </section>
 
     </div>
@@ -399,100 +420,139 @@
 
 
 
-    <script>
+<script>
+    const balls = [];
+    let canvasWidth = window.innerWidth;
+    let canvasHeight = window.innerHeight;
 
-        document.querySelector('.uti-pump').addEventListener('click', addUti);
+    window.addEventListener('resize', () => {
+        canvasWidth = window.innerWidth;
+        canvasHeight = window.innerHeight;
 
+       
+    });
+    
+    const gravity = 0.5;
+    const friction = 0.99;
 
-        function addUti() {
-            const body = document.body;
-            const square = document.createElement('div');
-            square.classList.add('bouncing-uti');
-            body.appendChild(square);
+    function createBall(x, y) {
+        const ball = document.createElement('div');
 
+        const ballRadius = 10 + Math.random() * Math.random() * 80;
+        ball.style.width = ballRadius * 2 + 'px';
+        ball.style.height = ballRadius * 2 + 'px';        
+        ball.className = 'ball';                
+        ball.style.transform = `translate(${x-ballRadius}px, ${y-ballRadius}px)`;
+        
+        document.body.appendChild(ball);
 
+        const ballData = {
+            element: ball,
+            x: x,
+            y: y,
+            oldX: x,
+            oldY: y,
+            radius: ballRadius,
+        };
+        balls.push(ballData);
+    }
 
-            // --- Configuration ---
-            const speed = 1 + Math.random() * 10; // Pixels per frame (adjust for faster/slower)
-            const squareSize = 50; // Must match CSS width/height
+    function updateBalls() {
+        balls.forEach(ball => {
+            const velocityX = (ball.x - ball.oldX) * friction;
+            const velocityY = (ball.y - ball.oldY) * friction;
 
+            ball.oldX = ball.x;
+            ball.oldY = ball.y;
 
+            ball.x += velocityX;
+            ball.y += velocityY + gravity;
 
-            let windowWidth = window.innerWidth;
-            let windowHeight = window.innerHeight;
-
-            // --- State Variables ---
-            let posX = Math.random() * (windowWidth - squareSize); // Initial X position
-            let posY = Math.random() * (windowHeight - squareSize); // Initial Y position
-            let velocityX = (Math.random() > 0.5 ? -1 : 1) * speed; // Initial X direction/speed
-            let velocityY = (Math.random() > 0.5 ? -1 : 1) * speed; // Initial Y direction/speed
-
-            // --- Update container size on window resize ---
-            window.addEventListener('resize', () => {
-                windowWidth = window.innerWidth;
-                windowHeight = window.innerHeight;
-
-                // Optional: Prevent square from getting stuck if resize makes it go out of bounds
-                if (posX + squareSize > windowWidth) {
-                    posX = windowWidth - squareSize;
-                }
-                if (posY + squareSize > windowHeight) {
-                    posY = windowHeight - squareSize;
-                }
-                if (posX < 0) {
-                    posX = 0;
-                }
-                if (posY < 0) {
-                    posY = 0;
-                }
-            });
-
-            // --- Animation Loop ---
-            function animate() {
-                // 1. Update position
-                posX += velocityX;
-                posY += velocityY;
-
-                // 2. Check for collisions with boundaries
-                // Right edge collision
-                if (posX + squareSize >= windowWidth) {
-                    velocityX = -speed; // Reverse X direction
-                    posX = windowWidth - squareSize; // Clamp position to edge
-                    // Optional: Change color on hit
-                    // square.style.backgroundColor = getRandomColor();
-                }
-                // Left edge collision
-                else if (posX <= 0) {
-                    velocityX = speed; // Reverse X direction
-                    posX = 0; // Clamp position to edge
-                    // square.style.backgroundColor = getRandomColor();
-                }
-
-                // Bottom edge collision
-                if (posY + squareSize >= windowHeight) {
-                    velocityY = -speed; // Reverse Y direction
-                    posY = windowHeight - squareSize; // Clamp position to edge
-                    // square.style.backgroundColor = getRandomColor();
-                }
-                // Top edge collision
-                else if (posY <= 0) {
-                    velocityY = speed; // Reverse Y direction
-                    posY = 0; // Clamp position to edge
-                    // square.style.backgroundColor = getRandomColor();
-                }
-
-                // 3. Apply updated position to the square element
-                // Using transform is generally more performant for movement than top/left
-                square.style.transform = `translate(${posX}px, ${posY}px)`;
-
-                // 4. Request the next frame
-                requestAnimationFrame(animate);
+            // Wall collisions
+            if (ball.x < ball.radius) {
+                ball.x = ball.radius;
+                ball.oldX = ball.x + velocityX * friction;
+            }
+            if (ball.x > canvasWidth - ball.radius) {
+                ball.x = canvasWidth - ball.radius;
+                ball.oldX = ball.x + velocityX * friction;
+            }
+            if (ball.y < ball.radius) {
+                ball.y = ball.radius;
+                ball.oldY = ball.y + velocityY * friction;
+            }
+            if (ball.y > canvasHeight - ball.radius) {
+                ball.y = canvasHeight - ball.radius;
+                ball.oldY = ball.y + velocityY * friction;
             }
 
-            square.style.transform = `translate(${posX}px, ${posY}px)`;
-            requestAnimationFrame(animate);
+            // Ball collisions
+            for (let i = 0; i < balls.length; i++) {
+                if (balls[i] !== ball) {
+                    const otherBall = balls[i];
+                    const dx = ball.x - otherBall.x;
+                    const dy = ball.y - otherBall.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const minDist = ball.radius + otherBall.radius;
+
+                    if (distance < minDist) {
+                        const normalX = dx / distance;
+                        const normalY = dy / distance;
+                        const delta = minDist - distance;
+
+                        ball.x += normalX * delta * 0.5;
+                        ball.y += normalY * delta * 0.5;
+                        otherBall.x -= normalX * delta * 0.5;
+                        otherBall.y -= normalY * delta * 0.5;
+                    }
+                }
+            }
+        });
+    }
+
+    function renderBalls() {
+        for (const ball of balls) {
+            ball.element.style.transform = `translate(${ball.x - ball.radius}px, ${ball.y - ball.radius}px)`;
+        };
+    }
+
+
+    const spawning = {
+        active: false,
+        clientX: 0,
+        clientY: 0
+    }
+
+    
+    window.addEventListener('pointerdown', (event) => {
+        spawning.active = true
+        spawning.clientX = event.clientX
+        spawning.clientY = event.clientY
+    })
+
+    window.addEventListener('pointermove', (event) => {           
+        spawning.clientX = event.clientX
+        spawning.clientY = event.clientY
+    });
+
+    window.addEventListener('pointerup', () => {
+        spawning.active = false
+    });
+
+    function gameLoop() {
+        if (spawning.active) {
+            createBall(spawning.clientX+ Math.random() - 0.5, spawning.clientY + Math.random() - 0.5);
         }
-    </script>
+        updateBalls();
+        renderBalls();
+        requestAnimationFrame(gameLoop);
+    }
+
+
+
+
+    gameLoop();
+</script>
 
 </body>
 
