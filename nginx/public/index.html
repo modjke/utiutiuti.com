@@ -517,32 +517,32 @@
     }
 
 
-    const spawning = {
-        active: false,
+    const spawning = {       
         clientX: 0,
         clientY: 0
     }
 
-    
-    window.addEventListener('pointerdown', (event) => {
-        spawning.active = true
-        spawning.clientX = event.clientX
-        spawning.clientY = event.clientY
+    let skipNextSpawn = false
+    window.addEventListener('scroll', () => {
+      skipNextSpawn = true
     })
 
-    window.addEventListener('pointermove', (event) => {           
+    window.addEventListener('click', (event) => {       
+        if (skipNextSpawn) {
+            skipNextSpawn = false
+            return
+        }
+
         spawning.clientX = event.clientX
         spawning.clientY = event.clientY
-    });
 
-    window.addEventListener('pointerup', () => {
-        spawning.active = false
-    });
-
-    function gameLoop() {
-        if (spawning.active) {
-            createBall(spawning.clientX+ Math.random() - 0.5, spawning.clientY + Math.random() - 0.5);
+        let count = 5
+        while (count--) {
+            createBall(spawning.clientX+ (Math.random() - 0.5) * 50, spawning.clientY + (Math.random() - 0.5) * 50);
         }
+    })
+
+    function gameLoop() {        
         updateBalls();
         renderBalls();
         requestAnimationFrame(gameLoop);
