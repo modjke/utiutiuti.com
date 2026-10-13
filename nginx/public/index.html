@@ -107,6 +107,7 @@ input,select{font:inherit;font-family:var(--f-body);font-size:1.05rem;text-trans
 @media (max-width:720px){.altar{grid-template-columns:1fr}}
 
 /* holy popup */
+[hidden]{display:none!important}
 .modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:rgba(12,10,20,.82);backdrop-filter:blur(3px)}
 .modal-card{position:relative;max-width:26rem;width:100%;background:var(--stone);border:3px double var(--gold);border-radius:120px 120px 8px 8px;padding:2.5rem 1.75rem 1.75rem;display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center;
   box-shadow:0 0 80px rgba(227,181,79,.35)}
@@ -362,7 +363,7 @@ footer{font-family:var(--f-mono);font-size:.75rem;color:var(--dim);text-align:ce
         </label>
         <label class="check" for="oath"><input id="oath" type="checkbox"> I swear to defend UTI in every Overwatch case, regardless of evidence.</label>
         <div class="err" id="err" hidden></div>
-        <button class="cta" type="submit">Baptise me</button>
+        <button class="cta" type="button" id="baptise">Baptise me</button>
       </form>
       <div class="cert" id="cert" aria-live="polite">
         <small>CERTIFICATE OF MEMBERSHIP · NO. <span id="certNo">0007</span></small>
@@ -379,7 +380,7 @@ footer{font-family:var(--f-mono);font-size:.75rem;color:var(--dim);text-align:ce
     <div class="modal-card">
       <div class="modal-halo"><img id="modalImg" alt="UTI, speaking from the heavens" width="96" height="96"></div>
       <span class="eyebrow">A voice from the heavens</span>
-      <p class="modal-text" id="modalText">"What are you, retarded? This is a joke site."</p>
+      <p class="modal-text" id="modalText">"Are you retarded?<br>This is a joke site."</p>
       <small class="modal-sig">— UTI, from cooldown</small>
       <button class="cta" id="modalClose" type="button">Amen</button>
     </div>
@@ -404,18 +405,17 @@ footer{font-family:var(--f-mono);font-size:.75rem;color:var(--dim);text-align:ce
 
   // join form
   var form=document.getElementById('joinForm'), err=document.getElementById('err');
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var nick=document.getElementById('nick').value.trim();
-    if(!nick){err.textContent='Enter your in-game name. The Lord must know whom to blame.';err.hidden=false;return;}
-    if(!document.getElementById('oath').checked){err.textContent='Tick the oath. Faith without the oath is just spectating.';err.hidden=false;return;}
+  form.addEventListener('submit',function(e){e.preventDefault();baptise();});
+  document.getElementById('baptise').addEventListener('click',baptise);
+  function baptise(){
+    var nick=document.getElementById('nick').value.trim()||'Nameless Silver';
     err.hidden=true;
     document.getElementById('certName').textContent=nick;
     document.getElementById('certRank').textContent='is hereby ordained '+document.getElementById('rank').value+' of the Church of UTI.';
     document.getElementById('certSin').textContent='Sin absolved: "'+document.getElementById('sin').value+'". Go forth and hold your angle.';
     document.getElementById('certNo').textContent=String(Math.floor(1000+Math.random()*9000));
     openModal();
-  });
+  }
 
   // holy popup
   var modal=document.getElementById('modal'), closeBtn=document.getElementById('modalClose'), lastFocus=null;
