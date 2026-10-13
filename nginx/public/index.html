@@ -1,572 +1,429 @@
-<!DOCTYPE html>
-<html lang="en">
+<title>Church of UTI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=IM+Fell+English:ital@0;1&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* Layout: a single candlelit nave — stained-glass hero, then scripture panels flowing down the aisle, ending at the altar (join form). Single dark look by design. */
+:root{
+  --night:#141022;      /* cathedral dark */
+  --stone:#221b35;      /* panel stone */
+  --gold:#e3b54f;       /* gilt */
+  --parch:#efe3c8;      /* body text */
+  --ruby:#c2334a;       /* ban red */
+  --sapphire:#2f6fd6;   /* glass blue */
+  --emerald:#2f9e6c;    /* resurrection green */
+  --dim:#a99cc2;
+  --f-display:"UnifrakturMaguntia","Old English Text MT",Georgia,serif;
+  --f-body:"IM Fell English",Garamond,Georgia,serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--night);color:var(--parch);font-family:var(--f-body);font-size:1.125rem;line-height:1.6;
+  background-image:radial-gradient(ellipse at 50% -10%,rgba(227,181,79,.18),transparent 60%);}
+.wrap{max-width:62rem;margin:0 auto;padding-inline:clamp(16px,4vw,32px);padding-block:2rem 4rem;display:flex;flex-direction:column;gap:4.5rem}
+h1,h2{font-family:var(--f-display);font-weight:400;color:var(--gold);text-wrap:balance;margin:0;line-height:1.05}
+h1{font-size:clamp(3rem,10vw,6.5rem);text-shadow:0 0 30px rgba(227,181,79,.35)}
+h2{font-size:clamp(2.1rem,5vw,3.2rem)}
+h3{font-family:var(--f-body);font-style:italic;font-weight:400;font-size:1.35rem;margin:0;color:var(--gold)}
+p{margin:0;max-width:65ch}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+section{display:flex;flex-direction:column;gap:1.25rem}
+.lede{font-size:1.3rem;font-style:italic}
 
-<head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5ETBP02DNL"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:2rem;align-items:center}
+.hero-text{display:flex;flex-direction:column;gap:1.1rem;min-width:0}
+.window{width:100%;max-width:340px;justify-self:center;aspect-ratio:3/5;filter:drop-shadow(0 0 40px rgba(47,111,214,.35))}
+.window svg{width:100%;height:100%;display:block}
+.cta{align-self:flex-start;font-family:var(--f-mono);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.9rem;
+  background:var(--gold);color:var(--night);padding:.85rem 1.4rem;border-radius:2px;text-decoration:none;border:0;cursor:pointer}
+.cta:hover{background:var(--parch)}
+.cta:focus-visible,input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--parch);outline-offset:3px}
+@media (max-width:720px){.hero{grid-template-columns:1fr}.window{max-width:240px;order:-1}}
 
-    gtag('config', 'G-5ETBP02DNL');
-    </script>
+/* gospel */
+.gospel{columns:2 22rem;column-gap:2.5rem}
+.gospel p{margin-bottom:1rem}
+.gospel p:first-child::first-letter{font-family:var(--f-display);float:left;font-size:4.2rem;line-height:.8;padding:.3rem .5rem 0 0;color:var(--gold)}
+.vs{font-family:var(--f-mono);font-size:.7rem;color:var(--gold);vertical-align:super;margin-right:.2rem}
 
+/* relic */
+.relic{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2rem;align-items:start}
+.icon-frame{margin:0;display:flex;flex-direction:column;gap:.6rem;align-items:center;max-width:12rem}
+.icon-frame img{width:10rem;height:10rem;image-rendering:auto;border:6px solid var(--gold);outline:1px solid var(--gold);outline-offset:6px;box-shadow:0 0 40px rgba(227,181,79,.35)}
+.icon-frame figcaption{font-style:italic;font-size:.95rem;color:var(--dim);text-align:center}
+.stats{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 2rem}
+.stats div{display:flex;flex-direction:column;gap:.1rem;padding-block:.65rem;border-bottom:1px solid #3a2f55}
+.stats dt{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.stats dd{margin:0}
+@media (max-width:640px){.relic{grid-template-columns:1fr;justify-items:center}.stats{grid-template-columns:1fr;width:100%}}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Extraordinary uti</title>
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="UTI" />
-    <link rel="manifest" href="/site.webmanifest" />
+/* ban log */
+.log{background:#0c0a14;border:1px solid #3a2f55;border-radius:4px;font-family:var(--f-mono);font-size:.85rem;overflow-x:auto}
+.log table{width:100%;border-collapse:collapse;min-width:560px}
+.log th,.log td{text-align:left;padding:.7rem .9rem;border-bottom:1px solid #2a2240;vertical-align:top}
+.log th{color:var(--dim);font-weight:400;text-transform:uppercase;letter-spacing:.1em;font-size:.7rem}
+.log td:first-child{color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;padding:.1rem .5rem;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.06em;white-space:nowrap}
+.pill.ban{background:rgba(194,51,74,.18);color:#ff8a9b;border:1px solid var(--ruby)}
+.pill.rise{background:rgba(47,158,108,.18);color:#7fe0b2;border:1px solid var(--emerald)}
 
-    
-    <style>
-        /* --- Configuration --- */
-        :root {
-            --primary-color: #ffffff;
-            /* White text */
-            --secondary-color: #b0b0b0;
-            /* Lighter gray for subtitles/details */
-            --accent-color: #007bff;
-            /* A nice blue for emphasis */
-            --quote-bg: rgba(255, 255, 255, 0.05);
-            /* Subtle background for quotes */
-            --font-main: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-            --font-quotes: 'Georgia', serif;
-        }
+/* cooldown card */
+.cooldown{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1.25rem;align-items:center;background:linear-gradient(90deg,rgba(194,51,74,.22),rgba(194,51,74,.05));
+  border:1px solid var(--ruby);padding:1.25rem 1.5rem;border-radius:4px;font-family:var(--f-mono)}
+.cooldown .x{width:3rem;height:3rem;border-radius:50%;border:2px solid var(--ruby);display:grid;place-items:center;color:var(--ruby);font-weight:700;font-size:1.4rem}
+.cooldown b{color:#ff8a9b}
+.cooldown .t{font-size:1.6rem;font-variant-numeric:tabular-nums;color:var(--parch)}
 
-        /* --- Base & Reset --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-touch-callout: none;
-            /* iOS Safari */
-            -webkit-user-select: none;
-            /* Safari */
-            -khtml-user-select: none;
-            /* Konqueror HTML */
-            -moz-user-select: none;
-            /* Old versions of Firefox */
-            -ms-user-select: none;
-            /* Internet Explorer/Edge */
-            user-select: none;
-            /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
-        }
+/* commandments */
+.tablets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem}
+.tablet{background:var(--stone);border-radius:120px 120px 6px 6px;padding:2.5rem 1.75rem 1.75rem;display:flex;flex-direction:column;gap:.9rem}
+.tablet ol{margin:0;padding-left:2.2rem;display:flex;flex-direction:column;gap:.7rem}
+.tablet li::marker{font-family:var(--f-display);color:var(--gold);font-size:1.25rem}
+@media (max-width:640px){.tablets{grid-template-columns:1fr}}
 
+/* prayer */
+.prayer{border-block:1px solid var(--gold);padding-block:2rem;text-align:center;align-items:center}
+.prayer p{font-size:1.35rem;font-style:italic;line-height:1.8}
+.prayer .amen{font-family:var(--f-display);font-size:2rem;color:var(--gold);font-style:normal}
 
-        html {
-            scroll-behavior: smooth;
-            height: 100%;
-            /* Needed for body min-height 100vh */
-        }
+/* miracles */
+.miracles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem}
+.miracle{display:flex;flex-direction:column;gap:.6rem}
+.miracle svg{width:100%;height:auto;max-width:100%;border-radius:4px;background:var(--stone)}
+@media (max-width:760px){.miracles{grid-template-columns:1fr}}
 
-        body {
-            font-family: var(--font-main);
-            color: var(--primary-color);
-            background: #0f0f10;
-            line-height: 1.6;
-            overflow-x: hidden;
-            /* Prevent horizontal scrollbars */
+/* altar */
+.altar{background:var(--stone);border:1px solid #3a2f55;border-radius:6px;padding:clamp(1.25rem,4vw,2.5rem);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem}
+form{display:flex;flex-direction:column;gap:1rem}
+label{display:flex;flex-direction:column;gap:.35rem;font-family:var(--f-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+input,select{font:inherit;font-family:var(--f-body);font-size:1.05rem;text-transform:none;letter-spacing:0;color:var(--parch);background:var(--night);border:1px solid #4a3d6b;border-radius:3px;padding:.65rem .75rem}
+.check{flex-direction:row;align-items:flex-start;gap:.6rem;text-transform:none;letter-spacing:0;font-family:var(--f-body);font-size:1rem;color:var(--parch)}
+.check input{margin-top:.35rem}
+.cert{border:3px double var(--gold);padding:1.5rem;text-align:center;display:flex;flex-direction:column;gap:.75rem;justify-content:center;background:rgba(227,181,79,.05)}
+.cert .name{font-family:var(--f-display);font-size:2.2rem;color:var(--gold);word-break:break-word}
+.cert small{font-family:var(--f-mono);font-size:.72rem;color:var(--dim);letter-spacing:.1em}
+.err{color:#ff8a9b;font-size:.95rem}
+@media (max-width:720px){.altar{grid-template-columns:1fr}}
 
-            /* --- Sticky Footer Setup (Flexbox) --- */
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            /* Ensure body takes at least full viewport height */
-        }
+/* holy popup */
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:rgba(12,10,20,.82);backdrop-filter:blur(3px)}
+.modal-card{position:relative;max-width:26rem;width:100%;background:var(--stone);border:3px double var(--gold);border-radius:120px 120px 8px 8px;padding:2.5rem 1.75rem 1.75rem;display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center;
+  box-shadow:0 0 80px rgba(227,181,79,.35)}
+.modal-halo{position:relative;width:8rem;height:8rem;border-radius:50%;padding:6px;background:conic-gradient(var(--gold),var(--parch),var(--gold),var(--parch),var(--gold));box-shadow:0 0 50px rgba(227,181,79,.6)}
+.modal-halo img{width:100%;height:100%;border-radius:50%;display:block;object-fit:cover}
+.modal-text{font-size:1.5rem;font-style:italic;line-height:1.35;color:var(--parch)}
+.modal-sig{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.1em;color:var(--dim)}
+.modal-card .cta{align-self:center}
+@media (prefers-reduced-motion:no-preference){
+  .modal:not([hidden]) .modal-card{animation:descend .45s cubic-bezier(.2,.9,.3,1.2)}
+  .modal:not([hidden]) .modal-halo{animation:glow 2.5s ease-in-out infinite}
+  @keyframes descend{from{transform:translateY(-30px) scale(.92);opacity:0}}
+}
 
-        /* --- Main Content Wrapper (for Sticky Footer) --- */
-        .main-content {
-            flex-grow: 1;
-            /* Allows this element to grow and push the footer down */
-        }
+footer{font-family:var(--f-mono);font-size:.75rem;color:var(--dim);text-align:center}
+@media (prefers-reduced-motion:no-preference){.halo{animation:glow 3.5s ease-in-out infinite}@keyframes glow{50%{opacity:.55}}}
+</style>
 
-        /* --- Container --- */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+<div class="wrap">
 
-        /* --- Sections --- */
-        section {
-            padding: 60px 0;
-            opacity: 0;
-            /* Start hidden for animation */
-            transform: translateY(30px);
-            /* Start slightly lower */
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-
-        /* Add 'visible' class via JS or manually for testing */
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Stagger animations */
-        .main-content section:nth-of-type(1) {
-            transition-delay: 0s;
-        }
-
-        /* Hero now starts at 0 */
-        .main-content section:nth-of-type(2) {
-            transition-delay: 0.2s;
-        }
-
-        /* About */
-        .main-content section:nth-of-type(3) {
-            transition-delay: 0.4s;
-        }
-
-        /* Quotes */
-
-
-        /* --- Hero Section --- */
-        .hero {
-            /* min-height: 70vh; */
-            /* REMOVED: Height now wraps content */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 60px 20px;
-            /* Increased padding slightly for visual spacing */
-            /* Optional: replace with a specific background image */
-            border-bottom: 3px solid var(--accent-color);
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
-            animation: fadeInDown 1s ease-out forwards;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            color: var(--secondary-color);
-            max-width: 600px;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
-            animation: fadeInUp 1s ease-out 0.5s forwards;
-            animation-fill-mode: backwards;
-        }
-
-        /* --- About Section --- */
-        .about h2,
-        .quotes h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            margin-top: 40px;
-
-            color: var(--primary-color);
-            text-align: center;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .about h2::after,
-        .quotes h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background-color: var(--accent-color);
-        }
-
-        .about p {
-            font-size: 1.1rem;
-            color: var(--secondary-color);
-            text-align: justify;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* --- Quotes Section --- */
-        .quotes-container {
-            margin-top: 40px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-
-        @media (min-width: 768px) {
-            .quotes-container {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-        }
-
-        .quote {
-            background: var(--quote-bg);
-            padding: 25px;
-            border-radius: 8px;
-            border-left: 5px solid var(--accent-color);
-            font-family: var(--font-quotes);
-            font-size: 1.2rem;
-            font-style: italic;
-            color: var(--primary-color);
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .quote:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .quote::before {
-            content: '“';
-            font-size: 3rem;
-            color: var(--accent-color);
-            opacity: 0.3;
-            position: absolute;
-            top: 10px;
-            left: 15px;
-            line-height: 1;
-        }
-
-        /* --- Footer --- */
-        footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-            color: var(--secondary-color);
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            /* No flex-grow, so it stays at the bottom */
-        }
-
-        .ball {
-            width: 50px;
-            height: 50px;
-            background-image: url('favicon-96x96.png');
-            position: fixed;
-            /* Position relative to the body */
-            /* Initial position will be set by JavaScript */
-            top: 0;
-            left: 0;
-            will-change: transform;
-            /* Hint for browser optimization */
-            z-index: 1;
-            background-size: contain;
-            overflow: hidden;
-            border-radius: 50%;
-        }
-
-        div.uti-pump {
-            font-weight: bold;
-            width: 200px;
-            height: 50px;
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            line-height: 50px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0 auto;
-            margin-top: 40px;
-        }
-
-        p.tap-anywhere {
-            text-align: center;
-            color: white;            
-            margin-top: 50px;
-            animation: flashing-text 1s infinite;
-        }
-
-        @keyframes flashing-text {
-            
-            0% {
-                color: white;
-            }
-            50% {
-                color: #007bff;
-            }
-            100% {
-                color: white;
-            }
-        }
-
-
-        /* --- Basic Animations --- */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="main-content">
-
-        <section class="hero visible">
-            <h1>The Extraordinary uti</h1>
-            <p>A legend remembered for his unique perspective and unforgettable words.</p>
-        </section>
-
-
-
-        <section id="about" class="about container">
-            <h2>About the Legend</h2>
-            <p>
-                uti, a figure of enigmatic charm, lived a life marked by unexpected turns and profound insights. While
-                details of his life remain shrouded in mystery, his impact on those who knew him is undeniable. He
-                possessed a rare ability to blend the mundane with the extraordinary, leaving behind a legacy of
-                memorable phrases and a spirit of joyful unpredictability. His observations, though often brief,
-                resonated deeply, reminding us to embrace the unexpected and find humor in the everyday.
-            </p>
-        </section>
-
-        <section id="quotes" class="quotes container">
-            <h2>Words of Wisdom</h2>
-            <div class="quotes-container">
-                <blockquote class="quote">
-                    "green, are you retarded or what?"
-                </blockquote>
-                <blockquote class="quote">
-                    "blue, what the fuck are you doing?"
-                </blockquote>
-                <blockquote class="quote">
-                    "rush B! *goes A*"
-                </blockquote>
-            </div>
-
-            <p class="tap-anywhere">Tap anywhere to spawn uti<br>BEWARE: UTI IS UNSTABLE</p>
-            
-        </section>
-
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-text">
+      <span class="eyebrow">Faceit Level 5 · Excommunicated from ESEA · Accounts lost: 3 and counting</span>
+      <h1>The Church of UTI</h1>
+      <p class="lede">He was banned for our sins. Mostly for his own sins, actually. But when the cooldown was fulfilled, he rose again, opened a new account, and asked, "why do I keep getting banned?"</p>
+      <p>Welcome, pilgrim. You have found the one true congregation of UTI, the Banned One, the Lord of the Lifted Penalty, the AWPer Who Calls Rush B From Spawn. He has died for weeks at a time. He has died for a whole month. He always comes back. And he is always surprised.</p>
+      <a class="cta" href="#join">Join the Church</a>
     </div>
-    <footer>
-        <p>&copy; 2025 Remembering uti. All rights reserved (or not, uti wouldn't care).</p>
-    </footer>
+    <div class="window" aria-label="Stained glass window of UTI with a crosshair halo">
+      <svg viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
+        <defs><clipPath id="arch"><path d="M10 490V150A140 140 0 0 1 290 150V490Z"/></clipPath><clipPath id="face"><circle cx="150" cy="150" r="36"/></clipPath></defs>
+        <g clip-path="url(#arch)">
+          <rect width="300" height="500" fill="#1b2a5c"/>
+          <polygon points="0,0 150,0 0,220" fill="#2f6fd6"/>
+          <polygon points="300,0 150,0 300,220" fill="#6a2c8f"/>
+          <polygon points="0,220 0,500 110,500" fill="#8f1f33"/>
+          <polygon points="300,220 300,500 190,500" fill="#1f6b4d"/>
+          <polygon points="0,220 150,0 300,220 190,500 110,500" fill="#23336e"/>
+          <!-- halo = crosshair -->
+          <g class="halo" stroke="#e3b54f" fill="none">
+            <circle cx="150" cy="150" r="62" stroke-width="10" opacity=".9"/>
+            <line x1="150" y1="72" x2="150" y2="110" stroke-width="7"/>
+            <line x1="150" y1="190" x2="150" y2="228" stroke-width="7"/>
+            <line x1="72" y1="150" x2="110" y2="150" stroke-width="7"/>
+            <line x1="190" y1="150" x2="228" y2="150" stroke-width="7"/>
+          </g>
+          <!-- head with headset -->
+          <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAIAAABt+uBvAAAQAElEQVR4Aex7CZhdRbXuWqv2cM7pPt2doTOSTghJOiQkDBEiEUwQkFEQhQvIPAoCXq8yS1DvU+5Vuc/ncJ96UXnvegFBkEsAmWUOkwHNxGDSSboz9Dyd02fYe1fV++t0EoISpaNg8/HqW7tO7dqrqtb6a61VtWt3y89njLxr9vgHZk98dOa4JxpBY38zs/6xPet/M3PM4zPHfgDpicYxz0wf+dDscf+19/h/3XeSZPwwIFLGCjFbYkISXB9YMswl5bGhkTHPKlupYhVa8qz1HDr2A4vLdsVhJSH5geGUsVmdiJcknjHKGrZmOxMRjIh3uP0AFaG5HwGThCmJPABkK+iQ+f/GM2gFlmzixUY0kw00C8HbyAIdy8YRWVgOzGyQ+wOYW7axMgYokBXDIKOlQkwONPfAherK7wcQH6gM00FAFkMqUSwArEKwHGvxCAxEvL1EH8AEFAKyPlsRa8SyIks+i9Ym4iAnqVyQ6vO5z5cBL4g4FZl0iasGJF32wsRiN0DWaDZG4KsmSQR2h/2B8hOgDjRRdqijXzEySA5uPHk/kSWA4ohFWV+Mpw1HKt2hvZV9hZe6+3/bn39hILc01/dCX//vCuVVkV5D3KRNV5DqFxUzsQgZ44tia9EZETMJuV6ts0eyCHXOCjEZIDx4fxHiMltiCM0iMZQMSzbokdTL3bkn23oeae359ebcfVvy97f139vRc19H24PtbQ9t2vzk5vaXuvKbOIxS6RIJs+cb9oxV1hjGhkGjPzinZatlkLSGXYpGjXv0/rxELMFxoiDsD9O/6+5bnehXNa02tKZMTWV6I6ZVZbNqIGqKeG2JX9zc99vW3lbDOfasCqwhzwBoa9kmCtsFEtxa6yzJ2achMkzIUfP+hIdIrJeUJY5TXjkTdmjdQ5yXoKjE+qlU7Zipc/Y7+JjjT73okku+/JXjzr/Imzr9ld7ciq6+3iA1wJ6Gg0JxuBORJqMMgwS5RSSygF4MKq3Q+xmgiGMbsk2pSTOn+9nqMFU9uWHy4QsPOe30s7507bVXXH/dNV9bfM1Xv/y5L37+3C/942HnnlYcX7+qv7B2oNwtXsHzI6WMMFASWBIJ/I5YaRgNCSoViTLEBsX3KwnWJcueSlXNP3jh577whcuvvPK6a6/52nXXfeUr1132hc+d8Mmj9p/bODpgVcpNGF1z/InHLjr+mA6VXt7Z0xzFPUoVfT9hmIgoo8qiiswlkcT3I5HIwqyY8JT5/QoPkXgmRYknKlM/ruGcCy/+/Jeu+MyZZ80/8MBJ4+szuhzme8t/eL3tmWdaHny476WXG1NV5550yp4HLWyNzYrWLZ3W5JiABfpRWgZEBjyVV9LPtuQpHYZ4VGY272uAGAHCIlYI+SmvtsbLhli7RVvq643eeHX5Hbc/+6Mfv3zz//39z29ZetNNr9155+yqqi994Z9mzz9gk06Wd7T1WltmVVZ+n6hmJa/09DzdsvHF1vZX+/OdLIhlGv0Trsqyad0WCU6H8IS6SuyiYZ5Eq5yHpd5gkdaJKVo94Bdz1NTcvORXj3/vxjW33zrwzBP0+nJueb13+Quv3X/X2vvv3qs6ffV1V9Xss9fvCsWmUtwt4aYgfKqQu6N505L2/of67AOdyb0tfc939vayx6zEMBEwESZBGQufMgjb1sj7IDjBXFglSVgs8cZN3pbW1KZN7U89/uiPv//CnXduXvaK7ewMoyjUOkySESKqp//1J59+9YnHpo4YecPX/mX8HrNebO5YNZD8+rWmZzd2r+uPNifURrSZaIOmVzbl1vSWOnQYk1JAwwIOA1ASsVoIiS0jH+YkzILTMt3R/sJtty779x/8evG1z/7v/1V4eSlvaBoTR9monDaxxEU/Kaeicl2SBF3tTb95sGPFimkTd//81V8bqJ3wWHPbK8V4NVEXUT9JH/ndrABTM9HvO/q3UKqsAmy4EcktG7ykOIAYFgSjej8AlCCCss2wLq5b0/bsk9GKV/wNa8LOjfUUZ5Jy2sasy56ynkc+GxWVUoWc17b+8dtvaVvb9PTSFzdH8dooalXSqwiWUiJ21hGoJOX3Mq0tld/oy+WUiuFbzlRgSDg5sI6HXDxydcP7kpjICDa/cWjLqWJfTTlfnRQyFKmk5FkEJjiFxZzHbBIxWhL2TMoz5f7uR+6/98EH72/v7ymKKSPwMmlCbEeThExMOi4R9RKtG+jbUASoXqw8IkWGLFscX1pitjT8kyjAQ2TYWI6V1Z4xCqsLM6qNoBLYicYyJ16ZOPbUgOflMjVHnfyZU844c/6BB1RlQyJLCC/uBwBgW2gdUMiIBoiaBgb+UCx0KL8kAabCt4Jw7XBxI7rfYX5JJpZACwIEMTmykN/XFGrCaiNslWc8ELzCsIpEJXWj9j75nIlHnZCdudcV1y3ec/Ys36fAUpCQZbLkMBJDMCeqAIRg9Pue3jUDhYL4xIEyblFjcpCCGTzDnCQVM/AQA4gqRMpaz1rfkmKsylbEMJ56BAeRxNLue+83/bDjaNQECqtHT2z4wb//cLeJDWJhHtAfarNrRYqsIpZEKKe4pUTr+/pzZUNGKSMKfVpARO+LJLnQlqEOV6yHybkV9OKIiTRjB8haJYoLpPNlxcVxDfWLjozHTaCqNPkmHai5M2d95bqvVo8YURQNeIiswfGJgu64BSLoxSISrcglq5O4I6OKYjyjYW5s/Rg2BcbhTeLmEmD8iZRsEUxdrXHxSLSnkiCcMnfv8dOme2HKwYlWTErkpBNPOuP0M4RZRDy4ozFaI1TT9hRb7i5Fzb29XXGUhPhSAPyYyYg123mGbaGyY3s76ZgAnVPAEkekSiow1bVjZ85SDVMkgLvZwUbG2HQqfdUVV8yftz/AMsZsPWIcfFzJNUuO6PWuvle7unuVwmuaYQI6Qm/BkYZl+vMAORQMixYV++HI3afWT59F6SrNBLIwAkI4YaSx9WOuX7x4zNixMCLcgnZUlpiKJJ1E68rlligueIEWYWdB72eAnIaW2OKXSRBbverRY9P19YQtI7RjtgwbYzgVMZNSBx100PnnnZfJZLiSaMdk2bD0Ea3Jl9cOFPM44BfPMslOZ4eGT/qzMnIFHovAC8ehkaNGeTU1g2pV4o/Twlg4lQFGYVXmnHPPPe6448IQOyP36M3Lun5KijosrenNbSlEkfiaWVfq32QblqWdAuR0chJjpq3HwkYTQi9U0ppxYoiCe0osYoWwzyRPJk6ceOmllx5wwAFBEFQebs0QsRDy0VGfoZb+qC1fxAlJwirZ1slWvmH5s3OA4EFEzlKghtbKmI3rmtqb1uhSibDBNrArhyHUJhFDLioRc2Nj49lnn+1j70hvJo+sIvAzvhfliTpzhUKkDQsc802m4VraKUBQwBJijw2MCbTx46Rj9co3ltytX1shUYHjMuvEgtyixYrEtwJDy1ZVN86YMWZ0vWJx4BIhNwSMDQEjpn6chETJxiiJVMiwP2vYukfuhx0HW7cvpWGTZGeSWKcaC+HVw0By3xo/39/x2xdXL7mbNjWTLhFrErieeJrYOi8DVsxcP2r0rFmzPKWgP0igr8Nm8KISUVscdxmK3burYLFncgDZrc+dOGgFqFxpGFw7BQg6MxGwSYS0sljrU6Rtb1fLc0tX3PlLam2xtpywcd6VQA/jHM8iYpua2tp99tnb8zyghwfWVizElQhqA4gBbXqKhVycxESGscBhKMwGYzhwgSz4tt/g/u9KOwVIrLMLzZhqSpQl0oGOq8tlv3XL2gfuXXnvPaVNGzkqO+GZYAOG4JSMlK2unjdvHuK0Ulj0sgIroW0aWzBhT0Rb+vt7yuUyDaIjhGaWHE5wRiZbKbmeh8ElO5NhcAoNI/pa7SQ2vtYZnWSSUpDrXL1kSdN9D8qWVjLlSOmETNrAVAzgCFOpqVP32G3SpHQqNX36jN0mTmSlMIrrwxLcsUjUXoz7tU2wY9xqQYOjUeXHEgFwtBgWtFOArJtMyAqZEW5ZLIO1sh5p0aWqzs4N99zX8thjuq9dc9nqRMUeVxSEZ40ePfrwww8LwqChoWHRIYcEqZCYEcLFWYkgDCFU92mDxd4wW5hMBQp2OUa0hpG7m+FwyU6FcFJCeOjEbBRZuBle8yVhh1QmitSmltVL7mp/6Tm/vycAIx4wdIRuPHLkyKOOOnrEiBFY7z/60Y9OnTaNFcI9mJjEi1kKTF2lUtGQZgQxtCKX0JRwGQxJruDq/u7XTgGyFQtiS2Kx2LsjDM2VAzPxlFFYvUIqR81rX7r1luQPTVwsl5VAOSKnre97WMgOPfTQJElmzJix//wD/CAQEiHPKS4KRtSZyxfixDJbZ0GuFX7ZdYELRMMk7RQgaAqpHVkUnbQW04p7ImW4rGPDSRiVSq+9tvTntyYdHU53sdYaQMDEI0bWnXXOWXvN2ath0uSPLFgwbuwYAhauG/RiI0vdRQ0vi8XVKrRiYwRYsbKuZpBxOOQ7BYidoOxEZGvZEBshA008gxBhOHBnXoGNq/u7O194Gh+Cwly3pohcC3gap1J+417TL7z4whF19ZPHT2iYNEF7lLAmLInoh6iPpSNdnfMV+vTjkkFgU7BTP0g8Zd2ww+TaKUA7k2+7HQEKsRQqUuXCM/ctsZs3UpwICzEZlsjYMEghGFVXp8aOGVNfX09o6ToF3tYQxdb05PIlzYZ8oUCMJ0YZqxJWsShCLzQskgxZCnaaskVsIkw+zk+z8I4tG3+/5G5VKpM2iaVEiL3A8wLFYo0dO3bsuLHjlEKkd/6F/QAMqWypva+/gNcViwe+aEQ6Z3qGXfOtYA5ZuL99Axlql7YSvIUQLAAQpzyx+f66qLDuN4+UN26iUpFhHUSaWBsrwqw4W1uTxTkJMHWDWWLW7N45eoql2GhDJISujCIjrl1MHJObBcf9d78g2y7IgDBEbNkSRUkcKJvVcdjR/vwv76BSQeJocEfkiSfQnW0QhlWZasUsVGlDNrZUIOotRTHZhG0kBpt1q3BEgA8ECNYAaBekeleaDBkghpIgC1XZkGfgH8y+jtOlcseLS+m1VXjRFwtgnA+S47YskgpToY9DIoMK6KEJ8ZxgbL2GC2Gmz/P7Ah/H1UUR7JKs9cAzTGjIAFXktux8QDRLovwEjmQBlUm1bn7lgXsp3+vhMMPCxBwTIAHhDbautlYAGFnXg7AmGTBqfc602qDVy7SGmTY/3e2nS5JJpIocJw2HJEMXAugYpzqxYU6IDKyCnULpQmH9714pb2phncCIBnuu4MFhCiexOABybIP16ALbxT+0977S3PrsmnUPL1/z2Io1Lzdt3NxbKrq/SedBtr97vgsACRv3amEEux6ogu+wAn+LvEisl/TnXvnNI9TbyXGJrJBRiNWCU1rEbCGtxApGBKLEbPHCsdzoe3s67i/Gj8f0qKFfFMp3tLY2U6osKmE2josZM4IBiK2j9xoxiDvUIdny1unFj7uB4K4Pq6kkpdy6K0OBHwAAEABJREFUl14strRQHBkdJZSIiE4SJeIHOJg01rplECshCtaaWOsBInzw6LeEE2t8PkPeF5UqgLhO/+7XLgBEtiI10FGGlOHtxFJKlQup9o7VDz9CPR0JRdqjgYH8+qZ1K1eu7O7uZliDhQ25QVHGHZGGk5aZtChinE0S+xRkQyJ0T8MhOVmHJIclskzI2VKFoKYwvInQVVJjdaqje+PzL+U3bYpLA21bNj9y/wPXXnnV/7n55s72Dnfaj8GMEeZUECIHDJUQhl+8x/qKiDUww5GRpeGRoNVQBYHoIDfFjMwALjGEMOSx8k1CHjQulJ5+5LGXn3vhW9+44fJLv/DoQ490dXY5OJgDP8C+emZj4+SGhmw2y+iCAbklo1MmriOqIZK4gKqhivUu8e8CQJDEblOAWZQmt/ONiIpS3edn2kW92LT2Z7fcevGFF93+n7d0dXZGMc5CJJNOA5eFH/3oUUceecThR0yZPEXHmiwhFAeW6mwykZJZfrjfhJEN2apdEwuS/c1plyWxg6IY5oTJ+F7kqS7JvhrZJ7o6Ht/SsnTNmqaWLX25fCwydvxE4HLMMccsWrgQH4XaWlt/eccdTz/9lE5gfb5fsZppAS0YUXvolIlzR9bVRPGQxRqU5l3Id10SIAT9AJAWiYUHkmjFlu4nmzf+pr17lTatcJrA323q1CNOOO6kz5zyoQ/tHwTBsmXL7rrzrscff6Kzq1MnGsmSCokm13nzGsYc2DB2j9AbEcfZRDMWu3dB213ochcAQmhWUJ8Ib1RJQmogyPSMGPV4T8djba3LS3EnE6dT+31o3qmnnfEP/3DK1D2mtXe033f/kv++++5VK1cFmfBjRxxy9LFHjRlVj32BIY1dc2O2dm519URdzsY5352mGWWtWOBvLZywQrw13wUd/6omuwKQsKeN0cogtBTD1Ji5+/0+X3yyI1nvMY0esfDIwy++6JLTTj5lxpTdW9evf/CuX/3qzjvWNa+fMHHSyaecevkVl3/24gsbZ84gYkeSwMWyia2LdXVSDixCWaKFMQliHQcu4IScaDCj9zgNGSCIzsYakbKfymeqGj56sJk0ZWnTxqpJ9Z84+aQL/vHSI44/NlVTtWLV8ltv/c8l/31Xb2fbnL32PPucc66+5torr7zmxE+d1NnW+fBDD7d2tCdkyGlPgNuQK1buKsC9xzDsfLihA0TE2rLyi1iw582bffwJ3SNHHXTy6ef807VHfOyIlISPPvjof/z4plt+cVtrd8eHFy0479ILr7nmyqsu/+Kpp546bfoeTN6yF5e9uvpVK+QOTcgljT01ACIHPsFQKjjR8Ei7ApAQrF+Vxdvz4IX+9BmNCw85+NjjO/oLv7ztrh/8z+8/9eiT2SB1wjGfuOaLX7z+6qsvueC8w+cfMLG6SlmNdtWZ6rGjx+LoAwdphPOiChaI17Agw1sBGlYmNGSALBmLrQthor1ibKyo9lzupz+76eb/+NGzy56fOmOPiy4498avfuX68y/8/NHHz+Ww46HHl/705ubnllK+n7XBIdr06TNwApskMWnsEFxfhWIJR9QAyPWKjiuo0fBIQwcI8+tTEkcBcev6lg2vv/HvN35z02srTzzk4O/esPhbiy+//KxTDp0xNd287uWf3fTSD36w4b9u3XD33esff6zYvI5MhMVpwm4T8D0aOOOVlZxbUSlKNIBntthZo4qGURoyQIirkdWpIOAobhgxutjeftYJx/34X/75mvPO+PTuU+rWrln205seuPGGFb+6ddMzD/evej7oXDuulOt8eVnLit/ZuADPmt7YOGbMGFXBYhAJix+G/20lghHRcElDBoiYEVzhINjgbXlttdfVNqY8MPD66kf/8+anb/zO2ttuzz3zTHnl8qR5TVjuVSYnqpiictLR3rdubdTTrZiqstnGGY211VmuAKMRntkd1gMSWCdRJSMXlMjlYHIE5m1k3TbS2ooBujJuQZV7V0vbcXbtaFtCt4MdkMUyzM5ktz36c79DBgiDeJZJrEkKbcufb7n71r5f/aLvnrt52ct6S5PX21Zdyo1hqtNcFXG1Df3Iw3IemLJpWq83tPjGKD+cOmVafV2dkFGkLAmOfxCc2CplcA/EEjY4znfH0+Q7JsPkFDJEFlAATdLMOCexjOMmpUiUUrG4k3+jyAo7sCwSzN1Y58xoKISjbotXaU4kib2ikZjeQZJ3wPMWFrHkJexryhAnvf3F9o5yewf357LGMERxk2Ms48aRZYtaiIajja4ObH02kxiraPfGGaMmjNdCCYyLTJnApp0SljxjA2OJU5ozBRvkbNgjqd50TW/tiL5R9R3Z2s1hZpOf3hKk28Kq9qCqzcdhdqZLpWMVROxH7MXKj8SLRSUiGgACYRMrHfkgkwAhZULS1WThA29R7W1vhgwQZgfz7BvhUhzGcSZO0nGUjkuZclGsdlSZZSEDX7FkLRvR2ovjYk93vqeLksj3ZfdpU0fvNgGf84FXIlSwOAngkqdKTjfoGfSq6nx6RH/VqN6a+mi3qVX7zR+96LCagxZtHDnmuXz50bauXzdv+XXz5kc2tz/XV1ipVZOXbvcyXX5Vl5/plLDbC3v9oC9IgfKCbr3EI8NaCPt/Eu0pk2IY1NtC8tbKIQNkma3AjLCJEV8Y4wY2CWysbAz3caQNcjEEHJVhZdk3Nk1MAyU7UCRiSXQ2nWmYOCnIVJElQ+4bWZ+X6kpVt1fVtmZHtdWONnvNmXDk0QsvueyU/3HDKf98w7zTzmmrq//ZMy/+7LnfPtCy5YmO/DO95ad7y4935B5s3vLfbzTdufKNO5av+dXrG+5ds+netc33r9342MaO53ryLxeiNV51S6qmPZ3tCcO8z7AlZu0ZLdbSO0hDBgguU1aEaXfTAacia9lY2JXowHBgCD4i2ipLDFbLbBCXPTJKoa6cUK7gJRRa2btx9ujqkb714YoFkg4/G09pHHP40Ysuv/ozN918wre/uf9ll4w98uPrq6q/dsttR170uUu/8e0lL7z8h3y5WdNmpi1MrUQbidZbbtL2tdi8rPm5QvR0rvhUPn5qIHm4u3BvS9cv12z5yfKmny5fs6S5bTV7m4MgH3oRQQPY+7sTgyw7dBxADFQYtxo2IZKIZ4g1iWGlRcWkcFIfK2y4peSlSmG6gDIz+R4p8ZU/Z89Zo2rqfFKGPFtdc/41iz/3ne8des11444+Jjd23Oul8r/d8Yu9jz12nyOP+PoPf/T7deu7iqWipTLhcE4SdhSLRCwFZhz19xC1s9dO/hZSiHMtRM1ETRV6g2S5pse6Cnesan5ic9dG9gYCX/vWIgC+GxaEPsUSDAQkltkqR0aRVUWFOMJFhBJflVN+MfAHfA/Un0n1pNPFmmw+9IuswUuhP21m45jxYwzHRukS66QqKLDd0tZ210MPnXbZZQcvOuzKK69bvfoPhVxBE2lrjMDUNBPCnCFjyFaIDJGBm1rSxBrRhcQSvELEiGjBtHGkpCBeF8k6Q7/tKL7S1t8jmTwFWE2hy18kdPYXed7CwJZgKhBDGRTYM6yMsAV5JcUFjwu+FH1V8lWUCtWI2ppJE8fO2nP/o4+cedCCbhO39HRHwhRIUJXac+7sVNYrWzOQ5J9c+tS//tu3PnXip84866x771nSu6U7SJQtJgQ/jbXF4aMx1rq4GhCWfjdDkIQsOSJEOBJTwXAQu8HcGrJW0NYmCTFA6bDyeltufXexwOmEPHoHSQg2y7EF/JgE2jpF4masHHmlol8u+HHR05EY9BYYDmIMycp6WmN+woLye33VlZLcyBSPmuyPa5RJe/LM/cMPf3zEsafudvbn5y3+1oIbvj/q9Aueiu1jK143BYQqZxESwMtm19aOYUNxgb7xjRtv/N4Pl61cXSqUJNIJJZGNiAE8MksWEDAxW4HzOlkJN+RsxXMLOQmjG4KIlrZCRihVyIir8UgbirqZVhr9SqnQYjmvfExVIolheCqGEOBvCVNv0Md2EtE+G58tPEbBGhJWMYQQlYrD2qKjbNnPxCrQCMWmRHGS4iQtfaz7MmFndaYwcZJpnJ3e98NjDj688ewz5v/jpUctvu74f/7qUddes/Bzl8z59Kez++5LY8Y2dXS+uHJVvlQWUcLMQspTs2fPDsMUbslyuRyXoggHQ3gmDCkRIwhSg1cpxQ4lqEvwNRYOgiBThVQdBqFSzhDcs+06/XGBmQhEhKhjy8zrO/rXd/cWyVk/ETMaw+IILCBU0I5J2AZsPTYecrKeJTUYdGO3IoVi/EB7AVasBE9UFKgeNp2BSiaNL+3eUPWRj8w8/cxDr7zuqOv/df4/Xdfw6RNrFh1i58wt7zY5GTM+qh2hs3VRkLGiqrPZcePHez5iI8SBLKxE4bU+W10NDeE7FdEGBQMsltlVMLvc9/2RI0dOmDChoaFh+rTpc+fOPeSQj53g0if33XffTCYDvOBKg43fJrcYDliTcc8UHKCXaEN/ob0UxdaFTsFolWeYBRibw8txbr3EwDKcGLAtq4zBIu0bizwfJl2ZJJdK4F+xIu35ZQlyFOhR42X6nMlHHPupxV/7+BVXNp74D6m959lJu9PoCaqqnlJ1EtZ6QVY4CDjwjATwEpZpM6Z/4pPHHfiRBal0uhJMLMbEh6AD5s+vrq6CWEAFkIVhmM3WjBg5co899pg1a9Z+++23aNGik0466fzzz//yl7/83e9+95Zbb7n33vtuu+3W733ve9/5znfOOPPMurq6JNGe529V6E9/rKuqICAE/yBVIF4/UNowUEDw1uyJVYqYXbCH2Vp2YLomg5fEXqQF3h4xxcoknk78JAkSLVSykjdUsIxP7FRSfj7MVk+fM2Xh0YdffOW+p1/s7znPjG0oV9cl6ZT2xShnsr4Rz7CycBLIhRipibSbGU8+dthhJ59yythxYxlyskue5y1YsGDOnLkLDlxw2GGHHXfcJ84444zLLrvs6quv+uY3vwkIfv7zn99+++3f//73Fy9efM455xx55JH77LPP+PHja2vramtrq6uqR4wYkcmkrTVJkgzq86e5EDFmgMiJgXkgLlb+P7S5VO42pmzxXKTCYmA87LZ0tEMSI7GRBIHXsgGHBk4isVLpmOtKXBUjSElZ/GREff3+B+578pnzTju3bt8PU904m8paP8TYisizRmxFRNyLJXFGaBReMXSitMEtcyqTrq7JBmFIThpC8j1v4cKF119//de//vUf/fBHP/nJT7797Ruvvuqqiy66+OijjjrooIOmTZsGCLLZLPwolUrBlVw8YoyB1oQZiKIojmPmrTWu9k8udsCQZTxAC+SEDWKOaX0h31IsJmEKs2mMNQwey5B9K5fjxCXKogNXH4tXUEGvH3anM+3pTF84Ih+M7k2N6kiPKE+aMvnwj8877bRxhx1GkxtMyrO+WzXEABryDCaocinSympAJQiHnBBIYD8azzE8RiNidpJSJYkonJwdfPDBCz7ykUgUavcAAAWdSURBVIbJk2EXNTU1iL6AIwhC2JeIWFh9hflPM2tNPp8rFUtQDyP8KcNgDRMPFlyOiSSCYReJ2mJqKRZyZGMHgEMH9kFk5a0jwjY8T3vWBjGnimHGjJ1Qf8D8xk98Yo8zz93t3M82nHvBlLPP2vPsM/c85cTsfnuX62pKoUdebOBz7v0LtoI+0bsyotwkOGmglvhGBcYLtSMPg1a4YOD2rcMba33fg12AAAdaVxgwaU4driRXervLGtvR0ZEfyFce7oBC5X57xujUkasQMiBLJmFCs9ZiobtQ1MxW2BkPWcwjyLFuu4Qx2YrLXjiQrh2174EfOv28fc/57NxzL9zrvAvmnHfh3HMv2O/cz04/9pPBlOlJmCFRQhiNBUGGiVx8IdxDIUvAhQQ/FSJL22hwfGFSjhgd0NaEHpi0Ma5XBjvaEHqjCi7IiFyRdkiAFwiiiTa6UCq2bNzYn8tZt4ZV2u7Aub2oK9HX3YKPjCHtWK377NkxoNuKuuCnIoEjWWU1JIL4jnnbJYlHObGlkXUTFy3c7/QzJh17fHbefDNxis6OMFU1prqOsiNtps54aWFfaevDHNzrurKsEgjLFthDO8EvuRkgiItK3IOUxbDW6SruIUGAQdo6vigFgsQgApKoHsxReDuyrnNCjg8hzS0tAAgFtAW9HburM2TcU3e5httvgVNfQm0l3WtUxAL5lHVOphkSuoaDl+Q5W6ip3+1jh8w57cTqBfuZkdXkeX4CSN/kYwhtbbFYLJfLg+vFYI1SCNCD/bxHOcbFSIP56tWr169fj1vQYA0K75xiogGijoFcX6GAyRUDD4CjkXlTb9eZ9NdNmLTw8DnHn5CavWd/Ol3ArhBeIB5hQjFshchZhTXGrFy5cvPmzVoDZWC+g7OA470iZ7XM+Xx+1apVmzZtGhwWlYOFd54jGhWY2gulnnLJsMcWADmN/hig1Lz5+3761NT02YlkBC+RWJQMESyOePtggAbGAioUCo8++mhTUxMwgkyo387zXhYw+tq1a5cvXw55MC4mEfnQiUtCvUS9xkTKM+QRggU5I6Idkux/5pmpmbPIrw4Tr1p7GcNKlFZsEFW38QnAxToXBLvvvvuyZcvuu+++7u7uv7gB2db6b/kLB8esRFEEMVasWIEyesdUIR86McKQ87I46jE6RlAhZ0F/1I9M2GdvHQTEisR3Ad44y4GZOTS38XIlBgGm+vp6bN7uueeepUuXQspdlWxbv0P/hSQQA6EHAmCNH3oHO7SwDCsoE7WVix1xhBNxw84o2O7AQ8AMyHmeQczxLeE1TCHmu3e4HfkwURBLa7zyeHhXHBgYuOGGG9asWfPeAwQ3hzDPPffcs88+i8JbVBniDVsYBbay1BXpHhOXFWvGUsZYkXfsCfBgGdQxmxLjKMAmbOGGYoDcm2xAB1ggB02dOjUIgjfeeOOOO+7o6up6k+k9KUEMmM/zzz+P8BxF0V8zJhN0hKLUH1OfxoGXWHb7OHKJsVFhMgY2BrtQFhtf8RIKrPKsMLyLyTq+Ny9AA/I8Dy9HzIxF5K677oKUCAoQGnyDOQp/c0LPoMFuYTWD5oMIuL1y8NFQcyNJRAmTVyZuK9u8tqIJuzvNeK/Aa4AVisru85pSUBi9Q3/kf5HADDuHcO3t7Vj1sTNCE1S+w+ZgHiqhZ/QPaEDNzc1PPvkkllHUDLWfP+Zngq8kpMvW9g7k+wsFw2SIDNvY44TZwSWhQEMMDIXpnSVwQmLwwsI3bNiA5iijBxAK7wbBWNDt4Kw88cQTAAhmi5q/FiP4CFNCDEftL0V45SXPs0xsqbpMVZEEkRdHIjhkwHjvXD2IBYwGCXvZUqmEMsR998j3fYiHUVpbW1966SX4NcbCLfK/ipiIGSajifDlpKATTexWKI97A9ud4eZq9bus/D8AAAD//1IIcKIAAAAGSURBVAMAvI3NNFfLTykAAAAASUVORK5CYII=" x="114" y="114" width="72" height="72" clip-path="url(#face)" preserveAspectRatio="xMidYMid slice"/>
+          <circle cx="150" cy="150" r="36" fill="none" stroke="#e3b54f" stroke-width="3"/>
+          <path d="M112 150a38 38 0 0 1 76 0" stroke="#141022" stroke-width="7" fill="none"/>
+          <rect x="106" y="140" width="12" height="26" rx="4" fill="#141022"/>
+          <rect x="182" y="140" width="12" height="26" rx="4" fill="#141022"/>
+          <path d="M188 162q-4 22-26 22" stroke="#141022" stroke-width="4" fill="none"/>
+          <circle cx="160" cy="184" r="5" fill="#c2334a"/>
+          <!-- robe -->
+          <path d="M150 188 85 420h130Z" fill="#efe3c8"/>
+          <path d="M150 188 130 420h40Z" fill="#c2334a"/>
+          <!-- hands: mouse and keyboard -->
+          <rect x="70" y="300" width="44" height="18" rx="3" fill="#141022"/>
+          <ellipse cx="216" cy="306" rx="12" ry="18" fill="#141022"/>
+          <!-- banner -->
+          <!-- leading -->
+          <g stroke="#0c0a14" stroke-width="5" fill="none">
+            <path d="M0 220 150 0 300 220M110 500 0 220M190 500 300 220"/>
+          </g>
+          <!-- banner sits above the leading so nothing crosses it -->
+          <rect x="40" y="430" width="220" height="38" fill="#8f1f33" stroke="#e3b54f" stroke-width="3"/>
+          <text x="150" y="456" text-anchor="middle" font-family="UnifrakturMaguntia, Georgia, serif" font-size="24" fill="#ffffff">He is unbanned</text>
+        </g>
+        <path d="M10 490V150A140 140 0 0 1 290 150V490Z" fill="none" stroke="#e3b54f" stroke-width="8"/>
+      </svg>
+    </div>
+  </header>
 
-    <script>
-        // Select sections within .main-content needing scroll animation
-        const sections = document.querySelectorAll('.main-content section');
+  <!-- GOSPEL -->
+  <section>
+    <span class="eyebrow">The Holy Scripture</span>
+    <h2>The Gospel According to Teammate #4</h2>
+    <div class="gospel">
+      <p><span class="vs">1:1</span>In the beginning there was the lobby, and the lobby was without form, and void, and the warmup was Deathmatch. And UTI said, "let there be comms," and there were comms. And the comms were not good.</p>
+      <p><span class="vs">1:2</span>And he lifted up his voice and said unto the five, "Rush B, all of you, go, go, go." And the four went forth into B. And UTI stayed at spawn with the AWP, for it was not his calling to rush, only to call it.</p>
+      <p><span class="vs">1:3</span>And when the four died upon the site, he spake unto them words most unholy, words which shall not be written in this book, for the Church's lawyers have forbidden it. And they were recorded instead in the Book of Reports.</p>
+      <p><span class="vs">1:4</span>And when one teammate dared to answer him, UTI raised up the vote, and the teammate was kicked from the server, and cast out among the Casuals. Yea, he did this many times, and the votekick button wept.</p>
+      <p><span class="vs">1:5</span>And the servers did look upon him and say, "behold, this one is toxic," and cast him out for a week. And then another week. And then a month. And ESEA cast him out forever, which is a long time even for a messiah.</p>
+      <p><span class="vs">1:6</span>And lo, each time he was struck down, he looked unto his friends with great astonishment and said, "but what did I even do?" And his friends told him. Every time. In detail. And he believed them not.</p>
+      <p><span class="vs">1:7</span>And when the cooldown was fulfilled, he rose again, and called rush B, and stayed at spawn. Thus it is written, and thus it shall be, world without end, glhf.</p>
+    </div>
+  </section>
 
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
+  <!-- COOLDOWN -->
+  <section>
+    <span class="eyebrow">Current status of our Lord</span>
+    <div class="cooldown" role="status">
+      <div class="x" aria-hidden="true">✕</div>
+      <div>
+        <div>Competitive cooldown: <b>griefing (abuse of the votekick system)</b></div>
+        <div class="t" id="timer">Rises again in 06d 23h 59m 59s</div>
+        <div style="color:var(--dim);font-size:.8rem">UTI's official statement: "I literally did nothing." Do not grieve. It is always temporary. Except ESEA.</div>
+      </div>
+    </div>
+  </section>
 
-        const observerCallback = (entries, observer) => {
-            entries.forEach(entry => {
-                // Check if it's intersecting and doesn't already have the 'visible' class
-                // Prevents re-triggering if element scrolls out and back in quickly
-                if (entry.isIntersecting && !entry.target.classList.contains('visible')) {
-                    // Add 'visible' class only if it's not the hero section OR if hero animation is desired on scroll
-                    // Since hero is set to 'visible' initially, this check might be redundant for it,
-                    // but good practice if hero visibility could change.
-                    if (!entry.target.classList.contains('hero')) {
-                        entry.target.classList.add('visible');
-                    }
-                    // Optional: uncomment below to make animations only trigger once
-                    // observer.unobserve(entry.target);
-                }
-                // Optional: remove 'visible' class if element scrolls out of view
-                // else if (!entry.isIntersecting && entry.target.classList.contains('visible')) {
-                //     // Optionally remove class if you want animation to re-trigger on scroll back in
-                //     if (!entry.target.classList.contains('hero')) { // Don't hide hero on scroll out
-                //         entry.target.classList.remove('visible');
-                //     }
-                // }
-            });
-        };
+  <!-- RELIC -->
+  <section>
+    <span class="eyebrow">The Holy Relic</span>
+    <h2>The Saint, as He Appears Unto Us</h2>
+    <div class="relic">
+      <figure class="icon-frame"><img src="data:image/png;base64,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" alt="UTI's in-game avatar" width="96" height="96"><figcaption>The sacred avatar. Survived every account.</figcaption></figure>
+      <dl class="stats">
+        <div><dt>Faceit level</dt><dd>5, by divine humility</dd></div>
+        <div><dt>Weapon of the Lord</dt><dd>AWP</dd></div>
+        <div><dt>Role</dt><dd>Undefined. Theologians are still arguing.</dd></div>
+        <div><dt>Map pool</dt><dd>All of them. He is everywhere.</dd></div>
+        <div><dt>Accounts lost</dt><dd>3 confirmed</dd></div>
+        <div><dt>Longest exile</dt><dd>30 days</dd></div>
+        <div><dt>ESEA status</dt><dd>Excommunicated, permanently</dd></div>
+        <div><dt>Times he knew why</dt><dd>0</dd></div>
+      </dl>
+    </div>
+  </section>
 
-        const intersectionObserver = new IntersectionObserver(observerCallback, observerOptions);
+  <!-- BAN LOG -->
+  <section>
+    <span class="eyebrow">The Stations of the Ban</span>
+    <h2>A Chronicle of Deaths & Resurrections</h2>
+    <p>Each entry has been verified by at least one teammate who was "literally right there."</p>
+    <div class="log">
+      <table>
+        <thead><tr><th>Station</th><th>Event</th><th>The sin</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>I</td><td>The Unholy Word</td><td>Addressed his own teammates with a word so forbidden this Church will not print it. Reported by all four.</td><td><span class="pill ban">Cooldown</span></td></tr>
+          <tr><td>II</td><td>The Great Astonishment</td><td>Returned and asked the party "why did I get banned??" The party explained. He disagreed.</td><td><span class="pill rise">Risen</span></td></tr>
+          <tr><td>III</td><td>The False Prophecy of B</td><td>Called "rush B, all five" for an entire half. Was never one of the five.</td><td><span class="pill ban">Cooldown</span></td></tr>
+          <tr><td>IV</td><td>The Casting Out</td><td>Votekicked a teammate for the sin of having an opinion. Then another. The system noticed.</td><td><span class="pill ban">Banned, 1 week</span></td></tr>
+          <tr><td>V</td><td>The Excommunication</td><td>ESEA cast him out permanently. The only ban he cannot rise from. He still calls it unfair.</td><td><span class="pill ban">Forever</span></td></tr>
+          <tr><td>VI</td><td>The Forty Days</td><td>Bullied his team until the servers gave him his longest exile: one full month in the desert.</td><td><span class="pill ban">Banned, 1 month</span></td></tr>
+          <tr><td>VII</td><td>The Reincarnations</td><td>Three accounts fallen, three new ones risen. Same avatar every time. Same surprise every time.</td><td><span class="pill rise">Risen, again</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-        sections.forEach(section => {
-            // If the section is not the hero, observe it for scroll animation
-            if (!section.classList.contains('hero')) {
-                intersectionObserver.observe(section);
-            }
-            // If you WANT the hero section to also animate on scroll (instead of load),
-            // remove the 'visible' class from it in HTML and uncomment the next line:
-            // intersectionObserver.observe(section);
-        });
+  <!-- COMMANDMENTS -->
+  <section>
+    <span class="eyebrow">Brought down from the mountain (the Dust II catwalk)</span>
+    <h2>The Commandments</h2>
+    <div class="tablets">
+      <div class="tablet">
+        <h3>Tablet the First</h3>
+        <ol>
+          <li>When he calls rush B, thou shalt rush B. He shall not.</li>
+          <li>Thou shalt not take his AWP, nor his drop, nor his spot at spawn.</li>
+          <li>Remember the cooldown, and keep it holy.</li>
+          <li>Thou shalt not disagree with him, lest a vote be called upon thee.</li>
+          <li>Thou shalt not report thy brother. Thy other teammates will handle that.</li>
+        </ol>
+      </div>
+      <div class="tablet">
+        <h3>Tablet the Second</h3>
+        <ol start="6">
+          <li>Thou shalt not eco when he says force.</li>
+          <li>Thou shalt not covet thy neighbour's knife skin.</li>
+          <li>Thou shalt explain to him why he was banned. He shall not listen.</li>
+          <li>Thou shalt not speak the name of ESEA in his presence.</li>
+          <li>Thou shalt act surprised with him, every single time.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
 
-        // Ensure hero section is visible immediately (if not animated by scroll)
-        // This is slightly redundant now as 'visible' is hardcoded in HTML for hero,
-        // but reinforces the intent.
-        const heroSection = document.querySelector('.hero');
-        if (heroSection && !heroSection.classList.contains('visible')) {
-            // If you decided to animate hero on scroll, this ensures it's visible if JS fails or is slow
-            // Or, if you keep initial visibility, this does nothing extra.
-            // heroSection.classList.add('visible'); // Could force visibility if needed
-        }
+  <!-- PRAYER -->
+  <section class="prayer">
+    <span class="eyebrow">To be recited before every queue</span>
+    <h2>The UTI's Prayer</h2>
+    <p>Our UTI, who art in cooldown,<br>hallowed be thy rank.<br>Thy lift come, thy frags be done,<br>on Mirage as it is on Nuke.<br>Give us this day our daily rush B,<br>which thou shalt call but never join,<br>and forgive us our whiffs,<br>as thou hast never forgiven ours.<br>Lead us not into the votekick,<br>but deliver us from the report button.<br>For thine is the AWP, the Deagle, and the glory,<br>until the next report.</p>
+    <span class="amen">GG.</span>
+  </section>
 
-    </script>
+  <!-- MIRACLES -->
+  <section>
+    <span class="eyebrow">Attested by witnesses on Discord</span>
+    <h2>The Three Miracles</h2>
+    <div class="miracles">
+      <div class="miracle">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A smoke grenade parting like the Red Sea">
+          <rect width="300" height="180" fill="#221b35"/>
+          <ellipse cx="80" cy="110" rx="70" ry="55" fill="#a99cc2" opacity=".6"/>
+          <ellipse cx="220" cy="110" rx="70" ry="55" fill="#a99cc2" opacity=".6"/>
+          <rect x="138" y="40" width="24" height="140" fill="#e3b54f" opacity=".25"/>
+          <circle cx="150" cy="95" r="10" fill="#efd2a8"/>
+          <path d="M150 105v35m0-25-14 12m14-12 14 12m-14 25-10 18m10-18 10 18" stroke="#efe3c8" stroke-width="4" fill="none"/>
+          <circle cx="150" cy="95" r="17" fill="none" stroke="#e3b54f" stroke-width="3"/>
+        </svg>
+        <h3>The Parting of the Smoke</h3>
+        <p>He walked through a fresh window smoke and got a one-tap. The enemy said "wallhack." Overwatch said "not guilty." Theologians remain divided.</p>
+      </div>
+      <div class="miracle">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five skulls in a row on a kill feed">
+          <rect width="300" height="180" fill="#221b35"/>
+          <text x="150" y="40" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#a99cc2">ROUND 30 · 1 v 5</text>
+          <g fill="#efe3c8">
+            <g id="sk"><circle cx="40" cy="95" r="18"/><rect x="28" y="105" width="24" height="16" rx="3"/><circle cx="33" cy="93" r="5" fill="#221b35"/><circle cx="47" cy="93" r="5" fill="#221b35"/></g>
+            <use href="#sk" x="55"/><use href="#sk" x="110"/><use href="#sk" x="165"/><use href="#sk" x="220"/>
+          </g>
+          <text x="150" y="158" text-anchor="middle" font-family="UnifrakturMaguntia, Georgia, serif" font-size="26" fill="#e3b54f">Ace</text>
+        </svg>
+        <h3>The Feeding of the Five</h3>
+        <p>With one AWP and five bullets he fed the whole enemy team, while his four disciples lay dead on B where he had sent them. Then he told them what he thought of them, and was crucified by the report button within the hour.</p>
+      </div>
+      <div class="miracle">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An empty tomb with a rolled-away stone shaped like a play button">
+          <rect width="300" height="180" fill="#221b35"/>
+          <path d="M60 170V90a60 60 0 0 1 120 0v80Z" fill="#141022" stroke="#a99cc2" stroke-width="3"/>
+          <circle cx="225" cy="130" r="40" fill="#a99cc2"/>
+          <path d="M213 112v36l30-18Z" fill="#141022"/>
+          <path d="M100 60l20-30 20 30" stroke="#e3b54f" stroke-width="3" fill="none" opacity=".7"/>
+          <text x="120" y="135" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" fill="#2f9e6c">QUEUE: 00:04</text>
+        </svg>
+        <h3>The Empty Tomb</h3>
+        <p>On the last day of the month-long exile, his friends found his old account empty. He had already risen on a new one, with the same avatar, and was in queue calling rush B.</p>
+      </div>
+    </div>
+  </section>
 
+  <!-- JOIN -->
+  <section id="join">
+    <span class="eyebrow">The Altar</span>
+    <h2>Join the Church of UTI</h2>
+    <div class="altar">
+      <form id="joinForm" novalidate>
+        <label for="nick">Your in-game name
+          <input id="nick" name="nick" type="text" maxlength="32" placeholder="e.g. xX_Disciple_Xx" autocomplete="off">
+        </label>
+        <label for="rank">Your rank in the Church
+          <select id="rank" name="rank">
+            <option>Lay Silver</option>
+            <option>Deacon of the Default Plant</option>
+            <option>Bishop of B Site</option>
+            <option>Cardinal of the Cooldown</option>
+            <option>Apostle (has been banned with him)</option>
+          </select>
+        </label>
+        <label for="sin">Confess your sin
+          <select id="sin" name="sin">
+            <option>I bought a Negev on pistol round</option>
+            <option>I stole his AWP drop</option>
+            <option>I asked him to rush B with us</option>
+            <option>I voted no on his votekick</option>
+            <option>I reported him (and I'm sorry)</option>
+            <option>I queued without him during the ban</option>
+          </select>
+        </label>
+        <label class="check" for="oath"><input id="oath" type="checkbox"> I swear to defend UTI in every Overwatch case, regardless of evidence.</label>
+        <div class="err" id="err" hidden></div>
+        <button class="cta" type="submit">Baptise me</button>
+      </form>
+      <div class="cert" id="cert" aria-live="polite">
+        <small>CERTIFICATE OF MEMBERSHIP · NO. <span id="certNo">0007</span></small>
+        <div>This certifies that</div>
+        <div class="name" id="certName">A Faithful Disciple</div>
+        <div id="certRank">has yet to approach the altar.</div>
+        <div id="certSin" style="font-style:italic;color:var(--dim)"></div>
+        <small>SIGNED UNDER COOLDOWN · VALID UNTIL THE NEXT REPORT</small>
+      </div>
+    </div>
+  </section>
 
+  <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalText">
+    <div class="modal-card">
+      <div class="modal-halo"><img id="modalImg" alt="UTI, speaking from the heavens" width="96" height="96"></div>
+      <span class="eyebrow">A voice from the heavens</span>
+      <p class="modal-text" id="modalText">"What are you, retarded? This is a joke site."</p>
+      <small class="modal-sig">— UTI, from cooldown</small>
+      <button class="cta" id="modalClose" type="button">Amen</button>
+    </div>
+  </div>
 
+  <footer>Church of UTI · Non-profit, non-prophet, frequently non-unbanned · Not affiliated with Valve, who are frankly part of the problem.</footer>
+</div>
 
 <script>
-    const balls = [];
-    let canvasWidth = window.innerWidth;
-    let canvasHeight = window.innerHeight;
+(function(){
+  // cooldown timer, loops forever like his bans
+  var end = Date.now() + 7*24*3600*1000 - 1000;
+  var el = document.getElementById('timer');
+  function pad(n){return String(n).padStart(2,'0')}
+  function tick(){
+    var ms = end - Date.now();
+    if(ms <= 0){ el.textContent = 'HE IS RISEN. (Banned again in 3… 2… 1…)'; end = Date.now() + 7*24*3600*1000; return; }
+    var s=Math.floor(ms/1000), d=Math.floor(s/86400), h=Math.floor(s%86400/3600), m=Math.floor(s%3600/60);
+    el.textContent = 'Rises again in '+pad(d)+'d '+pad(h)+'h '+pad(m)+'m '+pad(s%60)+'s';
+  }
+  tick(); setInterval(tick,1000);
 
-    window.addEventListener('resize', () => {
-        canvasWidth = window.innerWidth;
-        canvasHeight = window.innerHeight;
+  // join form
+  var form=document.getElementById('joinForm'), err=document.getElementById('err');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var nick=document.getElementById('nick').value.trim();
+    if(!nick){err.textContent='Enter your in-game name. The Lord must know whom to blame.';err.hidden=false;return;}
+    if(!document.getElementById('oath').checked){err.textContent='Tick the oath. Faith without the oath is just spectating.';err.hidden=false;return;}
+    err.hidden=true;
+    document.getElementById('certName').textContent=nick;
+    document.getElementById('certRank').textContent='is hereby ordained '+document.getElementById('rank').value+' of the Church of UTI.';
+    document.getElementById('certSin').textContent='Sin absolved: "'+document.getElementById('sin').value+'". Go forth and hold your angle.';
+    document.getElementById('certNo').textContent=String(Math.floor(1000+Math.random()*9000));
+    openModal();
+  });
 
-       
-    });
-    
-    const gravity = 0.5;
-    const friction = 0.99;
-
-    function createBall(x, y) {
-        const ball = document.createElement('div');
-
-        const ballRadius = 10 + Math.random() * Math.random() * 80;
-        ball.style.width = ballRadius * 2 + 'px';
-        ball.style.height = ballRadius * 2 + 'px';        
-        ball.className = 'ball';                
-        ball.style.transform = `translate(${x-ballRadius}px, ${y-ballRadius}px)`;
-        
-        document.body.appendChild(ball);
-
-        const ballData = {
-            element: ball,
-            x: x,
-            y: y,
-            oldX: x,
-            oldY: y,
-            radius: ballRadius,
-        };
-        balls.push(ballData);
-    }
-
-    function updateBalls() {
-        balls.forEach(ball => {
-            const velocityX = (ball.x - ball.oldX) * friction;
-            const velocityY = (ball.y - ball.oldY) * friction;
-
-            ball.oldX = ball.x;
-            ball.oldY = ball.y;
-
-            ball.x += velocityX;
-            ball.y += velocityY + gravity;
-
-            // Wall collisions
-            if (ball.x < ball.radius) {
-                ball.x = ball.radius;
-                ball.oldX = ball.x + velocityX * friction;
-            }
-            if (ball.x > canvasWidth - ball.radius) {
-                ball.x = canvasWidth - ball.radius;
-                ball.oldX = ball.x + velocityX * friction;
-            }
-            if (ball.y < ball.radius) {
-                ball.y = ball.radius;
-                ball.oldY = ball.y + velocityY * friction;
-            }
-            if (ball.y > canvasHeight - ball.radius) {
-                ball.y = canvasHeight - ball.radius;
-                ball.oldY = ball.y + velocityY * friction;
-            }
-
-            // Ball collisions
-            for (let i = 0; i < balls.length; i++) {
-                if (balls[i] !== ball) {
-                    const otherBall = balls[i];
-                    const dx = ball.x - otherBall.x;
-                    const dy = ball.y - otherBall.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const minDist = ball.radius + otherBall.radius;
-
-                    if (distance < minDist) {
-                        const normalX = dx / distance;
-                        const normalY = dy / distance;
-                        const delta = minDist - distance;
-
-                        ball.x += normalX * delta * 0.5;
-                        ball.y += normalY * delta * 0.5;
-                        otherBall.x -= normalX * delta * 0.5;
-                        otherBall.y -= normalY * delta * 0.5;
-                    }
-                }
-            }
-        });
-    }
-
-    function renderBalls() {
-        for (const ball of balls) {
-            ball.element.style.transform = `translate(${ball.x - ball.radius}px, ${ball.y - ball.radius}px)`;
-        };
-    }
-
-
-    const spawning = {       
-        clientX: 0,
-        clientY: 0
-    }
-
-    let skipNextSpawn = false
-    window.addEventListener('scroll', () => {
-      skipNextSpawn = true
-    })
-
-    window.addEventListener('click', (event) => {       
-        if (skipNextSpawn) {
-            skipNextSpawn = false
-            return
-        }
-
-        spawning.clientX = event.clientX
-        spawning.clientY = event.clientY
-
-        let count = 5
-        while (count--) {
-            createBall(spawning.clientX+ (Math.random() - 0.5) * 50, spawning.clientY + (Math.random() - 0.5) * 50);
-        }
-    })
-
-    function gameLoop() {        
-        updateBalls();
-        renderBalls();
-        requestAnimationFrame(gameLoop);
-    }
-
-
-
-
-    gameLoop();
+  // holy popup
+  var modal=document.getElementById('modal'), closeBtn=document.getElementById('modalClose'), lastFocus=null;
+  document.getElementById('modalImg').src=document.querySelector('.icon-frame img').src;
+  function openModal(){lastFocus=document.activeElement;modal.hidden=false;closeBtn.focus();}
+  function closeModal(){modal.hidden=true;if(lastFocus)lastFocus.focus();}
+  closeBtn.addEventListener('click',closeModal);
+  modal.addEventListener('click',function(e){if(e.target===modal)closeModal();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!modal.hidden)closeModal();});
+})();
 </script>
-
-</body>
-
-</html>
