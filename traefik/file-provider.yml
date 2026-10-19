@@ -11,11 +11,20 @@ http:
       rule: "Host(`utiutiuti.com`)"
       service: utiutiuti
 
+    altars:
+      rule: "Host(`utiutiuti.com`) && PathPrefix(`/ws`)"
+      service: altars
+
   services:
     utiutiuti:
       loadBalancer:
         servers:
           - url: "http://utiutiuti:80"
+
+    altars:
+      loadBalancer:
+        servers:
+          - url: "http://altars:8080"
   
         
 tls:

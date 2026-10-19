@@ -32,6 +32,15 @@ services:
     restart: always
     networks:
       - traefik-public
+
+  altars:
+    build:
+      context: ./altars
+      dockerfile: Dockerfile
+    hostname: altars
+    restart: always
+    networks:
+      - traefik-public
     
 volumes:
   traefik-certificates:

@@ -43,6 +43,50 @@ section{display:flex;flex-direction:column;gap:1.25rem}
 .cta:focus-visible,input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--parch);outline-offset:3px}
 @media (max-width:720px){.hero{grid-template-columns:1fr}.window{max-width:240px;order:-1}}
 
+/* candle altars */
+.shrines{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem}
+.shrine{margin:0;display:flex;flex-direction:column;gap:.75rem;min-width:0}
+.shrine figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:.25rem 1rem;flex-wrap:wrap}
+.shrine h3{color:var(--accent-hi)}
+.shrine-count{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.08em;color:var(--dim);font-variant-numeric:tabular-nums}
+.shrine-stage{position:relative;border:1px solid #3a2f55;border-radius:120px 120px 6px 6px;overflow:hidden;background:#0c0a14;cursor:pointer;
+  touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;transition:border-color .2s,box-shadow .2s}
+.shrine-stage svg{display:block;width:100%;height:auto}
+.shrine-stage:hover{border-color:var(--accent)}
+.shrine-stage:focus-visible{outline:2px solid var(--parch);outline-offset:3px}
+.shrine-stage.holding{border-color:var(--gold);box-shadow:0 0 30px rgba(227,181,79,.3)}
+.shrine.full .shrine-stage,.shrines.cold .shrine-stage{cursor:not-allowed}
+.shrine-note{position:absolute;left:0;right:0;bottom:0;padding:.7rem 1rem;background:rgba(12,10,20,.86);border-top:1px solid #3a2f55;
+  font-family:var(--f-mono);font-size:.78rem;text-align:center;color:var(--parch);font-variant-numeric:tabular-nums}
+.shrine .aura{transition:opacity 1s}
+.shrine .candle .ign,.shrine .candle .flame{transform-box:fill-box;transform-origin:50% 100%}
+.shrine .candle.dying .flame{opacity:.75}
+.shrine .candle.dying .glow{opacity:.4}
+.shrine .candle.out .ign,.shrine .candle.out .glow{opacity:0;transition:opacity .4s}
+.shrine .smoke{opacity:0}
+.hold-ring{position:fixed;left:0;top:0;width:64px;height:64px;pointer-events:none;z-index:40;transform:translate(-50%,-50%)}
+.hold-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.hold-ring circle{fill:none;stroke-width:5}
+.hold-ring .track{stroke:rgba(239,227,200,.18)}
+.hold-ring .bar{stroke:var(--gold);stroke-linecap:round;stroke-dasharray:163.4;stroke-dashoffset:163.4;filter:drop-shadow(0 0 4px var(--gold))}
+.hold-ring.done .bar{stroke:var(--parch)}
+.hold-ring.touch{width:96px;height:96px}
+@media (max-width:720px){.shrines{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:no-preference){
+  .shrine .candle .flame{animation:flick 1.7s ease-in-out infinite alternate}
+  .shrine .candle .glow{animation:flare 2.3s ease-in-out infinite alternate}
+  .shrine .candle.new .ign{animation:ignite .8s cubic-bezier(.2,.9,.3,1.3) both}
+  .shrine .candle.out .smoke{animation:smoke 1.5s ease-out forwards}
+  .shrine .candle.out{animation:snuff 1.6s forwards}
+  .shrine-stage.nudge{animation:nudge .35s}
+  @keyframes flick{0%{transform:scale(1,1) skewX(0)}25%{transform:scale(.9,1.1) skewX(4deg)}50%{transform:scale(1.05,.94) skewX(-2deg)}75%{transform:scale(.95,1.12) skewX(3deg)}100%{transform:scale(1.03,.97) skewX(-4deg)}}
+  @keyframes flare{0%{opacity:.75}50%{opacity:1}100%{opacity:.85}}
+  @keyframes ignite{from{transform:scale(0);opacity:0}}
+  @keyframes smoke{0%{opacity:.7;transform:translateY(0)}100%{opacity:0;transform:translateY(-16px)}}
+  @keyframes snuff{0%,70%{opacity:1}100%{opacity:0}}
+  @keyframes nudge{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+}
+
 /* gospel */
 .gospel{columns:2 22rem;column-gap:2.5rem}
 .gospel p{margin-bottom:1rem}
@@ -184,6 +228,42 @@ footer{font-family:var(--f-mono);font-size:.75rem;color:var(--dim);text-align:ce
       </svg>
     </div>
   </header>
+
+  <!-- ALTARS -->
+  <section>
+    <span class="eyebrow">The Holy Altars</span>
+    <h2>Light a Candle</h2>
+    <p class="lede">Press and hold upon an altar for five seconds, and a candle shall be lit in His name. It burns for ten minutes, which is roughly how long his last unban lasted.</p>
+    <div class="shrines" id="shrines">
+      <figure class="shrine" data-altar="resurrected" style="--accent:var(--emerald);--accent-hi:#7fe0b2">
+        <figcaption><h3>Forever Resurrected</h3><span class="shrine-count" aria-live="polite">Kindling…</span></figcaption>
+        <div class="shrine-stage" tabindex="0" role="button" aria-label="Press and hold for five seconds to light a candle on the altar Forever Resurrected">
+          <svg viewBox="0 0 400 320" aria-hidden="true"></svg>
+          <div class="shrine-note" hidden></div>
+        </div>
+      </figure>
+      <figure class="shrine" data-altar="ban" style="--accent:var(--ruby);--accent-hi:#ff8a9b">
+        <figcaption><h3>Eternal Ban</h3><span class="shrine-count" aria-live="polite">Kindling…</span></figcaption>
+        <div class="shrine-stage" tabindex="0" role="button" aria-label="Press and hold for five seconds to light a candle on the altar Eternal Ban">
+          <svg viewBox="0 0 400 320" aria-hidden="true"></svg>
+          <div class="shrine-note" hidden></div>
+        </div>
+      </figure>
+    </div>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="wax-resurrected" x1="0" x2="1"><stop offset="0" stop-color="#a89c80"/><stop offset=".35" stop-color="#fff7e2"/><stop offset=".65" stop-color="#efe3c8"/><stop offset="1" stop-color="#8c8168"/></linearGradient>
+        <linearGradient id="wax-ban" x1="0" x2="1"><stop offset="0" stop-color="#2a0a12"/><stop offset=".35" stop-color="#b02a42"/><stop offset=".65" stop-color="#8f1f33"/><stop offset="1" stop-color="#1c060c"/></linearGradient>
+        <linearGradient id="flame-outer" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffe9a0"/><stop offset=".45" stop-color="#ffae3b"/><stop offset="1" stop-color="#ff5a1f" stop-opacity=".85"/></linearGradient>
+        <radialGradient id="flame-glow"><stop offset="0" stop-color="#ffcf6a" stop-opacity=".6"/><stop offset="1" stop-color="#ffcf6a" stop-opacity="0"/></radialGradient>
+        <radialGradient id="aura-resurrected"><stop offset="0" stop-color="#2f9e6c" stop-opacity=".55"/><stop offset="1" stop-color="#2f9e6c" stop-opacity="0"/></radialGradient>
+        <radialGradient id="aura-ban"><stop offset="0" stop-color="#c2334a" stop-opacity=".55"/><stop offset="1" stop-color="#c2334a" stop-opacity="0"/></radialGradient>
+      </defs>
+    </svg>
+    <div class="hold-ring" id="holdRing" hidden aria-hidden="true">
+      <svg viewBox="0 0 64 64"><circle class="track" cx="32" cy="32" r="26"/><circle class="bar" cx="32" cy="32" r="26"/></svg>
+    </div>
+  </section>
 
   <!-- GOSPEL -->
   <section>
@@ -427,5 +507,243 @@ footer{font-family:var(--f-mono);font-size:.75rem;color:var(--dim);text-align:ce
   closeBtn.addEventListener('click',closeModal);
   modal.addEventListener('click',function(e){if(e.target===modal)closeModal();});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!modal.hidden)closeModal();});
+})();
+</script>
+
+<script>
+(function(){
+  // candle altars: state lives on the altars websocket backend, this only draws it and sends holds
+  var NS='http://www.w3.org/2000/svg';
+  var cfg={slots:50,candleMs:600000,holdMs:5000};
+  var offset=0, online=false, positions=[];
+  var shrinesEl=document.getElementById('shrines');
+  var altars={};
+
+  // seeded so every visitor sees slot N in the same spot
+  function rng(seed){return function(){seed=seed+0x6D2B79F5|0;var t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  var TIERS=[{x0:110,x1:290,y:150},{x0:75,x1:325,y:200},{x0:40,x1:360,y:250}];
+  function layout(n){
+    var r=rng(1312), total=0, left=n, pos=[];
+    TIERS.forEach(function(t){total+=t.x1-t.x0-20;});
+    TIERS.forEach(function(t,i){
+      var span=t.x1-t.x0-20, k=i===TIERS.length-1?left:Math.round(n*span/total), step=span/k;
+      left-=k;
+      for(var j=0;j<k;j++) pos.push({tier:i,x:t.x0+10+step*(j+.5)+(r()-.5)*step*.35,y:t.y-4+(j%2?1.5:-1.5),h:30+r()*14,w:9+r()*2.5,d:-(r()*1.7).toFixed(2)});
+    });
+    for(var i=pos.length-1;i>0;i--){var j=Math.floor(r()*(i+1)),t=pos[i];pos[i]=pos[j];pos[j]=t;}
+    return pos;
+  }
+
+  function altarSVG(kind){
+    var emblem=kind==='ban'
+      ?'<circle cx="200" cy="62" r="15" fill="none" stroke="#e3b54f" stroke-width="4"/><path d="M190 52l20 20" stroke="#e3b54f" stroke-width="4" stroke-linecap="round"/>'
+      :'<path d="M200 40v44M187 55h26" stroke="#e3b54f" stroke-width="5" stroke-linecap="round"/>';
+    var s='<path d="M60 320V120A140 120 0 0 1 340 120V320Z" fill="#141022" stroke="#3a2f55" stroke-width="2"/>'+
+      '<ellipse class="aura" cx="200" cy="190" rx="200" ry="150" fill="url(#aura-'+kind+')" opacity=".15"/>'+
+      '<circle cx="200" cy="62" r="30" style="fill:var(--accent)" fill-opacity=".3" stroke="#e3b54f" stroke-width="3"/>'+
+      '<g stroke="#e3b54f" stroke-opacity=".35" stroke-width="1.5"><path d="M200 32v60M170 62h60M179 41l42 42M221 41l-42 42"/></g>'+emblem;
+    TIERS.forEach(function(t,i){
+      var w=t.x1-t.x0, last=i===TIERS.length-1;
+      s+='<rect x="'+t.x0+'" y="'+(t.y-8)+'" width="'+w+'" height="8" fill="#3a2f55"/>'+
+        '<rect x="'+t.x0+'" y="'+t.y+'" width="'+w+'" height="'+(last?320-t.y:26)+'" fill="#2b2342" stroke="#4a3d6b"/>';
+      if(last) s+='<rect x="150" y="'+t.y+'" width="100" height="'+(320-t.y)+'" style="fill:var(--accent)" fill-opacity=".55"/>'+
+        '<path d="M150 '+t.y+'v70M250 '+t.y+'v70M150 '+(t.y+6)+'h100" stroke="#e3b54f" stroke-width="2"/>'+
+        '<text x="200" y="'+(t.y+44)+'" text-anchor="middle" font-family="UnifrakturMaguntia, Georgia, serif" font-size="26" fill="#e3b54f">'+(kind==='ban'?'Ban':'Rise')+'</text>';
+      s+='<g class="cl"></g>';
+    });
+    return s;
+  }
+
+  function candleEl(kind,p){
+    var g=document.createElementNS(NS,'g');
+    g.setAttribute('class','candle');
+    g.setAttribute('transform','translate('+p.x.toFixed(1)+' '+p.y.toFixed(1)+')');
+    g.innerHTML='<ellipse class="pool" cx="0" cy="0" ry="2" fill="url(#wax-'+kind+')"/>'+
+      '<rect class="wax" x="'+(-p.w/2)+'" width="'+p.w+'" rx="1.5" fill="url(#wax-'+kind+')"/>'+
+      '<g class="top"><ellipse rx="'+(p.w/2)+'" ry="1.6" fill="'+(kind==='ban'?'#5a1a26':'#fff6dc')+'"/>'+
+        '<line y1="0" y2="-4" stroke="#1a1208" stroke-width="1.2"/>'+
+        '<circle class="glow" cy="-10" r="16" fill="url(#flame-glow)"/>'+
+        '<path class="smoke" d="M0 -5q-3 -5 0 -10t0 -10" stroke="#a99cc2" stroke-width="1.2" fill="none"/>'+
+        '<g class="ign"><g class="flame" style="animation-delay:'+p.d+'s">'+
+          '<path d="M0 -3C-4.5 -6 -4.5 -12 0 -20C4.5 -12 4.5 -6 0 -3Z" fill="url(#flame-outer)"/>'+
+          '<path d="M0 -3.5C-2 -5.5 -2 -8.5 0 -12.5C2 -8.5 2 -5.5 0 -3.5Z" fill="#fff8e0"/>'+
+        '</g></g></g>';
+    return g;
+  }
+
+  function now(){return Date.now()+offset;}
+
+  function burn(a,c){
+    var frac=Math.max(0,Math.min(1,(c.expiresAt-now())/cfg.candleMs)), p=c.pos, h=p.h*(.15+.85*frac);
+    c.wax.setAttribute('y',(-h).toFixed(2));
+    c.wax.setAttribute('height',h.toFixed(2));
+    c.top.setAttribute('transform','translate(0 '+(-h).toFixed(2)+')');
+    c.pool.setAttribute('rx',(p.w*(.55+(1-frac)*.6)).toFixed(2));
+    c.g.classList.toggle('dying',frac<.04);
+  }
+
+  function addCandle(kind,data,fresh){
+    var a=altars[kind], p=positions[data.slot];
+    if(!p) return;
+    removeCandle(kind,data.slot,false);
+    var g=candleEl(kind,p);
+    if(fresh) g.classList.add('new');
+    a.layers[p.tier].appendChild(g);
+    var c={slot:data.slot,expiresAt:data.expiresAt,pos:p,g:g,wax:g.querySelector('.wax'),top:g.querySelector('.top'),pool:g.querySelector('.pool')};
+    a.candles.set(data.slot,c);
+    burn(a,c);
+  }
+
+  function removeCandle(kind,slot,animate){
+    var a=altars[kind], c=a.candles.get(slot);
+    if(!c) return;
+    a.candles.delete(slot);
+    if(!animate||matchMedia('(prefers-reduced-motion:reduce)').matches){c.g.remove();return;}
+    c.g.classList.add('out');
+    setTimeout(function(){c.g.remove();},1600);
+  }
+
+  function mmss(ms){var s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+
+  function render(){
+    Object.keys(altars).forEach(function(kind){
+      var a=altars[kind], n=a.candles.size, full=n>=cfg.slots, next=Infinity;
+      a.candles.forEach(function(c){burn(a,c);next=Math.min(next,c.expiresAt);});
+      a.el.classList.toggle('full',online&&full);
+      a.aura.setAttribute('opacity',(.15+.85*n/cfg.slots).toFixed(2));
+      a.count.textContent=!online?'Cold':n?n+' of '+cfg.slots+' candles burning':'No candles burn. Be the first.';
+      var note=!online?'The altars have gone cold… rekindling':full?'The altar is full. A place frees in '+mmss(next-now()):'';
+      a.note.textContent=note;
+      a.note.hidden=!note;
+    });
+  }
+
+  function setOnline(v){
+    online=v;
+    shrinesEl.classList.toggle('cold',!v);
+    render();
+  }
+
+  document.querySelectorAll('.shrine').forEach(function(el){
+    var kind=el.dataset.altar, svg=el.querySelector('svg');
+    svg.innerHTML=altarSVG(kind);
+    altars[kind]={el:el,stage:el.querySelector('.shrine-stage'),aura:svg.querySelector('.aura'),layers:svg.querySelectorAll('.cl'),
+      count:el.querySelector('.shrine-count'),note:el.querySelector('.shrine-note'),candles:new Map()};
+  });
+  positions=layout(cfg.slots);
+  setInterval(render,1000);
+
+  // websocket
+  var params=new URLSearchParams(location.search);
+  // local dev: static server and altars backend run on separate ports
+  var local=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  var url=params.get('ws')||(local?'ws://'+location.hostname+':8080/ws':(location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws');
+  var ws=null, backoff=1000;
+  function send(m){if(ws&&ws.readyState===1)ws.send(JSON.stringify(m));}
+  function connect(){
+    ws=new WebSocket(url);
+    ws.onopen=function(){backoff=1000;};
+    ws.onmessage=function(e){
+      var m; try{m=JSON.parse(e.data);}catch(_){return;}
+      if(m.now) offset=m.now-Date.now();
+      if(m.type==='state'){
+        cfg={slots:m.slots,candleMs:m.candleMs,holdMs:m.holdMs};
+        positions=layout(cfg.slots);
+        Object.keys(altars).forEach(function(kind){
+          altars[kind].candles.forEach(function(c){c.g.remove();});
+          altars[kind].candles.clear();
+          (m.altars[kind]||[]).forEach(function(c){addCandle(kind,c,false);});
+        });
+        setOnline(true);
+      }else if(m.type==='lit'&&altars[m.altar]){
+        addCandle(m.altar,m.candle,true);render();
+      }else if(m.type==='out'&&altars[m.altar]){
+        removeCandle(m.altar,m.slot,true);render();
+      }else if((m.type==='full'||m.type==='rejected')&&altars[m.altar]){
+        nudge(m.altar);
+      }
+    };
+    ws.onclose=function(){
+      ws=null;cancelHold();setOnline(false);
+      setTimeout(connect,backoff);backoff=Math.min(backoff*2,15000);
+    };
+  }
+  connect();
+
+  // press and hold
+  var ring=document.getElementById('holdRing'), bar=ring.querySelector('.bar'), C=163.4;
+  var hold=null;
+
+  function nudge(kind){
+    var s=altars[kind].stage;
+    s.classList.remove('nudge');void s.offsetWidth;s.classList.add('nudge');
+  }
+  function placeRing(x,y,type){
+    ring.classList.toggle('touch',type==='touch');
+    ring.style.left=x+'px';
+    ring.style.top=y+'px';
+  }
+  function startHold(kind,x,y,type,pid){
+    if(hold) return;
+    if(!online||altars[kind].el.classList.contains('full')){nudge(kind);return;}
+    hold={kind:kind,pid:pid,start:performance.now(),type:type};
+    send({type:'hold',altar:kind});
+    altars[kind].stage.classList.add('holding');
+    ring.classList.remove('done');
+    bar.style.strokeDashoffset=C;
+    placeRing(x,y,type);
+    ring.hidden=false;
+    hold.raf=requestAnimationFrame(step);
+  }
+  function step(){
+    var p=Math.min(1,(performance.now()-hold.start)/cfg.holdMs);
+    bar.style.strokeDashoffset=C*(1-p);
+    if(p<1){hold.raf=requestAnimationFrame(step);return;}
+    send({type:'light',altar:hold.kind});
+    endHold();
+    ring.classList.add('done');
+    setTimeout(function(){if(!hold)ring.hidden=true;},350);
+  }
+  function endHold(){
+    cancelAnimationFrame(hold.raf);
+    altars[hold.kind].stage.classList.remove('holding');
+    hold=null;
+  }
+  function cancelHold(){
+    if(!hold) return;
+    send({type:'cancel',altar:hold.kind});
+    endHold();
+    ring.hidden=true;
+  }
+
+  Object.keys(altars).forEach(function(kind){
+    var stage=altars[kind].stage;
+    stage.addEventListener('pointerdown',function(e){
+      if(e.button!==0) return;
+      if(e.pointerType==='mouse') e.preventDefault();
+      startHold(kind,e.clientX,e.clientY,e.pointerType,e.pointerId);
+    });
+    stage.addEventListener('contextmenu',function(e){e.preventDefault();});
+    stage.addEventListener('keydown',function(e){
+      if((e.key===' '||e.key==='Enter')&&!e.repeat){
+        e.preventDefault();
+        var r=stage.getBoundingClientRect();
+        startHold(kind,r.left+r.width/2,r.top+r.height/2,'key','key');
+      }
+    });
+    stage.addEventListener('keyup',function(e){if((e.key===' '||e.key==='Enter')&&hold&&hold.pid==='key')cancelHold();});
+    stage.addEventListener('blur',function(){if(hold&&hold.pid==='key')cancelHold();});
+  });
+  window.addEventListener('pointermove',function(e){
+    if(!hold||hold.pid!==e.pointerId) return;
+    var r=altars[hold.kind].stage.getBoundingClientRect();
+    if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom){cancelHold();return;}
+    placeRing(e.clientX,e.clientY,hold.type);
+  });
+  ['pointerup','pointercancel'].forEach(function(t){
+    window.addEventListener(t,function(e){if(hold&&hold.pid===e.pointerId)cancelHold();});
+  });
+  window.addEventListener('blur',cancelHold);
+  document.addEventListener('visibilitychange',function(){if(document.hidden)cancelHold();});
 })();
 </script>

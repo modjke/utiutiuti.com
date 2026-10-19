@@ -1,0 +1,13 @@
+{
+  "name": "altars",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Websocket backend for the candle altars of the Church of UTI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "8.18.0"
+  }
+}
