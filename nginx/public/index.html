@@ -638,11 +638,10 @@ footer{font-family:var(--f-mono);font-size:.75rem;color:var(--dim);text-align:ce
   // local dev: static server and altars backend run on separate ports
   var local=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   var url=params.get('ws')||(local?'ws://'+location.hostname+':8080/ws':(location.protocol==='https:'?'wss://':'ws://')+location.host+'/ws');
-  var ws=null, backoff=1000;
+  var ws=null, backoff=1000, coldTimer=null;
   function send(m){if(ws&&ws.readyState===1)ws.send(JSON.stringify(m));}
   function connect(){
     ws=new WebSocket(url);
-    ws.onopen=function(){backoff=1000;};
     ws.onmessage=function(e){
       var m; try{m=JSON.parse(e.data);}catch(_){return;}
       if(m.now) offset=m.now-Date.now();
@@ -654,6 +653,8 @@ footer{font-family:var(--f-mono);font-size:.75rem;color:var(--dim);text-align:ce
           altars[kind].candles.clear();
           (m.altars[kind]||[]).forEach(function(c){addCandle(kind,c,false);});
         });
+        ws.ready=true;backoff=1000;
+        clearTimeout(coldTimer);coldTimer=null;
         setOnline(true);
       }else if(m.type==='lit'&&altars[m.altar]){
         addCandle(m.altar,m.candle,true);render();
@@ -664,8 +665,12 @@ footer{font-family:var(--f-mono);font-size:.75rem;color:var(--dim);text-align:ce
       }
     };
     ws.onclose=function(){
-      ws=null;cancelHold();setOnline(false);
-      setTimeout(connect,backoff);backoff=Math.min(backoff*2,15000);
+      // proxy timeouts and redeploys drop the socket; reconnect quietly, only go cold if it stays down
+      var wasUp=this.ready;
+      ws=null;cancelHold();
+      if(!coldTimer) coldTimer=setTimeout(function(){setOnline(false);},3000);
+      setTimeout(connect,wasUp?200:backoff);
+      if(!wasUp) backoff=Math.min(backoff*2,15000);
     };
   }
   connect();
